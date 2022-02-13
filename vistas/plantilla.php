@@ -6,7 +6,7 @@ $servidor = ControladorRuta::ctrServidor();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 	<meta charset="UTF-8">
 
@@ -48,6 +48,7 @@ $servidor = ControladorRuta::ctrServidor();
 	<link rel="stylesheet" href="css/habitaciones.css">
 	<link rel="stylesheet" href="css/reservas.css">
 	<link rel="stylesheet" href="css/perfil.css">
+	<link rel="stylesheet" href="css/carta.css">
 
 	<!--=====================================
 	VÍNCULOS JAVASCRIPT
@@ -86,6 +87,38 @@ $servidor = ControladorRuta::ctrServidor();
 	<!-- https://fullcalendar.io/docs/background-events-demo -->	
 	<script src="js/plugins/fullcalendar.min.js"></script>
 
+	<!--=====================================
+	VÍNCULOS PARA TODO EL TEMA DE DATATABLES
+	======================================-->
+	<!-- V1 -->
+	<!-- <link rel="stylesheet" href="plugins/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+  	<link rel="stylesheet" href="plugins/bower_components/datatables.net-bs/css/responsive.bootstrap.min.css">
+
+	<script src="plugins/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+	<script src="plugins/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+	<script src="plugins/bower_components/datatables.net-bs/js/dataTables.responsive.min.js"></script>
+	<script src="plugins/bower_components/datatables.net-bs/js/responsive.bootstrap.min.js"></script> -->
+
+	<!-- V2 -->
+	<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+	<link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+	<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+	<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+	<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+	<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+	<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+	<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+	<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+	<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+	<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+	<script src="plugins/pdfmake/pdfmake.min.js"></script>
+	<script src="plugins/pdfmake/vfs_fonts.js"></script>
+
+
+
 
 </head>
 <body>
@@ -98,14 +131,21 @@ include "paginas/modulos/header.php";
 PÁGINAS
 =============================================*/
 
+$rutas = array();
+
 if(isset($_GET["pagina"])){
 
-	/**Generaremos la lista blanca */
+	/**Ajustamos el tema por si nos viene otro parámetro además de ruta
+	 * Entonces, en $rutas[0] tengo la ruta o URL amigable y en [1] tengo temas de paginación.
+	 * Podría agregar mas elemenos si llega a ser el caso.*/
+	$rutas = explode("/" , $_GET["pagina"]);
+
+	/**Generaremos la lista blanca para el tema de las habitaciones*/
 	$rutasCategorias = ControladorCategorias::ctrMostrarCategoriasActivos();
 
 	foreach ($rutasCategorias as $key => $value) {
 
-		if($_GET["pagina"] == $value["ruta"]){
+		if($rutas[0] == $value["ruta"]){
 	
 			include "paginas/habitaciones.php";
 	
@@ -113,11 +153,24 @@ if(isset($_GET["pagina"])){
 
 	}
 
+	/**Generaremos la lista blanca para el tema de la carta*/
+	$rutasCarta = ControladorCarta::ctrMostrarCartaCount();
 
-	if($_GET["pagina"] == "reservas" || $_GET["pagina"] == "perfil"){
-
-		include "paginas/".$_GET["pagina"].".php"; //Lo que nos traiga la URL .php
+	foreach ($rutasCarta as $key2 => $value2) {
 		
+		if($rutas[0] == $value2["ruta"]){
+	
+			include "paginas/carta.php";
+	
+		}
+
+	}
+
+
+	if($rutas[0] == "reservas" || $rutas[0] == "perfil" || $rutas[0] == "carta"){
+
+		include "paginas/".$rutas[0].".php"; //Lo que nos traiga la URL .php
+
 	}
 
 }else{
@@ -142,6 +195,7 @@ include "paginas/modulos/modal.php";
 <input type="hidden" value="<?php echo $servidor ?>" id="urlServidor">
 
 <script src="js/plantilla.js"></script>
+<script src="js/carta.js"></script>
 <script src="js/menu.js"></script>
 <script src="js/idiomas.js"></script>
 <script src="js/habitaciones.js"></script>

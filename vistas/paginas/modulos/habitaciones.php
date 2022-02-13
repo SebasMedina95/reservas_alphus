@@ -26,9 +26,9 @@ HABITACIONES
 							
 							<img src="<?php echo $servidor.$value["img"]; ?>" class="img-fluid" width="100%">
 
-							<p class="small py-2 mb-0"><?php echo $value["descripcion"]; ?></p>
+							<p class="small py-3 mb-0"><?php echo $value["descripcion"]; ?></p>
 
-							<h3 class="py-2 text-gray-dark mb-0">DESDE $<?php echo number_format($value["continental_baja"] , 2, ',', '.'); ?></h3>
+							<h3 class="py-2 text-gray-dark mb-0">DESDE $<?php echo number_format($value["continental_baja"] , 0, ',', '.'); ?></h3>
 
 							<h5 class="py-1 text-gray-dark border"> <i class="fas fa-eye"></i> Ver detalles <i class="fas fa-eye"></i> </h5>
 

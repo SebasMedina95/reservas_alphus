@@ -127,6 +127,7 @@ TABLET VERTICAL (MD revisamos en 768px hacia abajo)
 
 	.infoHabitacion .colIzqHabitaciones .cabeceraHabitacion{
 		background: black;
+		margin-top: 35px;
 	}
 
 	.infoHabitacion .colIzqHabitaciones ul li{
@@ -143,10 +144,15 @@ TABLET VERTICAL (MD revisamos en 768px hacia abajo)
 
 	.infoHabitacion .categoria{
 		color:#af9475 !important;
+		margin-top: 10px;
 	}
 
 	.descripcionHabitacion h1{
 		font-size:30px;
+	}
+
+	.organizarTabla{
+		margin-top: -55px;
 	}
 
 

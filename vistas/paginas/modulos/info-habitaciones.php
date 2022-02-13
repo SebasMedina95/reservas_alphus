@@ -31,7 +31,7 @@ INFO HABITACIÓN
 				CABECERA HABITACIONES
 				======================================-->
 				
-				<div class="pt-4 cabeceraHabitacion">
+				<div class="pt-2 cabeceraHabitacion">
 
 					<a href="<?php echo $ruta;  ?>" class="float-left lead text-white pt-1 px-3">
 						<h5><i class="fas fa-chevron-left"></i> Regresar</h5>
@@ -41,20 +41,17 @@ INFO HABITACIÓN
 
 					<div class="clearfix"></div>
 
-					<ul class="nav nav-justified mt-lg-4">	
-
-						<?php foreach ($habitaciones as $key => $value) : ?>	
-
-							<li class="nav-item">
+					<div class="dropdown">
+						<h3 class="text-white">Seleccione una habitación: </h3>
+						<button class="btn btn-primary dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown"><?php echo $habitaciones[0]["tipo"] ?> - Temática <?php echo $habitaciones[0]["estilo"] ?></button>		
+						<div class="dropdown-menu">
+							<?php foreach ($habitaciones as $key => $value) : ?>
 								<!-- Para poder cambiar y navegar entre las diferentes habitaciones, por tanto, necesito obtener indices, el $key del foreach 
 								nos va a servir para eso por tiene los indicadores y también capturamos en una propiedad la ruta -->
-								<a class="nav-link text-white" orden="<?php echo $key ?>" ruta="<?php echo $_GET["pagina"] ?>" href="#">  <?php echo $value["estilo"] ?> </a>
-
-							</li>
-
-						<?php endforeach ?>
-
-					</ul>
+								<a class="dropdown-item" orden="<?php echo $key ?>" ruta="<?php echo $_GET["pagina"] ?>" href="#"> <?php echo $habitaciones[0]["tipo"] ?> - Temática <?php echo $value["estilo"] ?> </a>
+							<?php endforeach ?>
+						</div>
+					</div>
 
 				</div>
 
@@ -101,7 +98,7 @@ INFO HABITACIÓN
 				            <i class="fas fa-angle-right fa-2x"></i>
 				        </a>
 
-				         <div class="controller d-block d-lg-none">
+				         <div class="controller d-block ">
 
 					        <div class="indicate-area"></div>
 
@@ -210,118 +207,78 @@ INFO HABITACIÓN
 
 			<div class="col-12 col-lg-4 colDerHabitaciones">
 
-				<h2 class="colorTitulos">SUITE INCLUYE:</h2>
+				<h2 class="colorTitulos text-uppercase text-center"><?php echo $habitaciones[0]["tipo"] ?> INCLUYE:</h2>
 				
 				<ul>
-					<li>
-						<h5>
-							<i class="fas fa-bed w-25 colorTitulos"></i> 
-							<span class="text-dark small">cama 2 x 2</span>
-						</h5>
-					</li>
 
-					<li>
-						<h5>
-							<i class="fas fa-tv w-25 colorTitulos"></i> 
-							<span class="text-dark small">TV de 42"</span>
-						</h5>
-					</li>
+					<?php 
+					
+						/**Recordemos que los íconos vienen en formato JSON desde la BD, entonces debemos convertirlo
+						 * para manipularlo como si fuera un array: */
+						$incluye = json_decode($habitaciones[0]["incluye"] , true);
+					
+					?>
 
-					<li>
-						<h5>
-							<i class="fas fa-tint w-25 colorTitulos"></i> 
-							<span class="text-dark small">Agua caliente</span>
-						</h5>
-					</li>
+					<?php foreach ($incluye as $key => $value) : ?>
 
-					<li>
-						<h5>
-							<i class="fas fa-water w-25 colorTitulos"></i> 
-							<span class="text-dark small">Jacuzzi</span>
-						</h5>
-					</li>
+						<li>
+							<h5>
+								<i class="<?php echo $value["icono"] ?> w-25 colorTitulos"></i> 
+								<span class="text-dark small"><?php echo $value["item"] ?></span>
+							</h5>
+						</li>
 
-					<li>
-						<h5>
-							<i class="fas fa-toilet w-25 colorTitulos"></i> 
-							<span class="text-dark small">Baño privado</span>
-						</h5>
-					</li>
-
-					<li>
-						<h5>
-							<i class="fas fa-couch w-25 colorTitulos"></i>
-							<span class="text-dark small"> Sofá</span>
-						</h5>
-					</li>
-
-					<li>
-						<h5>
-							<i class="far fa-image w-25 colorTitulos"></i> 
-							<span class="text-dark small">Balcón</span>
-						</h5>
-					</li>
-
-
-					<li>
-						<h5>
-							<i class="fas fa-wifi w-25 colorTitulos"></i> 
-							<span class="text-dark small">Servicio Wifi</span>
-						</h5>
-					</li>
+					<?php endforeach ?>
+					
 				</ul>
+
+				<hr>
 
 				<!-- HABITACIONES -->
 
-				<div class="habitaciones">
+				<div class="habitaciones text-center">
 
-					<div class="container">
+					<div class="container text-center">
 
-						<div class="row">
+						<div class="row text-center">
 
-							<div class="col-12 pb-3 px-0 px-lg-3">
+							<?php
 
-								<a href="<?php echo $ruta;  ?>habitaciones">
-									
-									<figure class="text-center">
-										
-										<img src="img/habitacion02.png" class="img-fluid" width="100%">
+								$categorias = ControladorCategorias::ctrMostrarCategoriasActivos();
 
-										<p class="small py-4 mb-0">Lorem ipsum dolor sit amet, consectetur</p>
+							?>
 
-										<h3 class="py-2 text-gray-dark mb-0">DESDE $200 USD</h3>
+							<h2 class="colorTitulos text-uppercase text-center">Otras Categorías: </h2>
 
-										<h5 class="py-2 text-gray-dark border">Ver detalles <i class="fas fa-chevron-right ml-2" style=""></i></h5>
+							<?php foreach ($categorias as $key => $value) : ?>
 
-										<h1 class="text-white p-3 mx-auto w-50 lead" style="background:#197DB1">ESPECIAL</h1>
+								<?php if ($_GET["pagina"] != $value["ruta"]) : ?>
 
-									</figure>
+									<div class="col-lg-6 col-12 pb-3 px-0 px-lg-3">
 
-								</a>
+										<a href="<?php echo $ruta.$value["ruta"]; ?>">
+								
+											<figure class="text-center">
+												
+												<img src="<?php echo $servidor.$value["img"]; ?>" class="img-fluid" width="100%">
 
-							</div>
+												<p class="large py-2 mb-0"><?php echo $value["tipo"]; ?></p>
 
-							<div class="col-12 pb-3 px-0 px-lg-3">
+												<h3 style="font-size: 15px;" class="py-2 text-gray-dark mb-0">DESDE $<?php echo number_format($value["continental_baja"] , 0, ',', '.'); ?></h3>
 
-								<a href="<?php echo $ruta;  ?>habitaciones">
-									
-									<figure class="text-center">
-										
-										<img src="img/habitacion03.png" class="img-fluid" width="100%">
+												<h5 style="font-size: 15px;" class="py-1 text-gray-dark border"> <i class="fas fa-eye"></i> Ver Detalles <i class="fas fa-eye"></i> </h5>
 
-										<p class="small py-4 mb-0">Lorem ipsum dolor sit amet, consectetur</p>
+												<!-- <h1 class="text-white p-2 mx-auto w-50 lead" style="background:<?php echo $value["color"]; ?>"><?php echo $value["tipo"]; ?></h1> -->
 
-										<h3 class="py-2 text-gray-dark mb-0">DESDE $150 USD</h3>
+											</figure>
 
-										<h5 class="py-2 text-gray-dark border">Ver detalles <i class="fas fa-chevron-right ml-2"></i></h5>
+										</a>
 
-										<h1 class="text-white p-3 mx-auto w-50 lead" style="background:#2F7D84">STANDAR</h1>
+									</div>
 
-									</figure>
+								<?php endif ?>
 
-								</a>
-
-							</div>
+							<?php endforeach ?>
 
 						</div>
 

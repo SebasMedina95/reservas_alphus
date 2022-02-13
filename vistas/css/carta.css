@@ -1,0 +1,82 @@
+/*================================================= 
+PRODUCTOS DE LA CARTA DEL HOTEL.
+===================================================*/
+
+.barraProductos .organizarProductos span{
+    margin-left: 10px;
+}
+
+/* Row */
+.barraProductos .mostrar{
+    position: relative;
+    padding: 0;
+}
+
+.barraProductos .organizarProductos{
+    position: relative;
+    left: 75%;
+    top: 0;
+}
+
+.container .bloqueContendorCarta{
+    text-align: center;
+}
+
+.contenedorpaginador{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+    margin-top: -15px;
+}
+
+@media (max-width:768px){
+    
+    .barraProductos .mostrar{
+        
+        padding: 0;
+        margin-top: 40px;
+    }
+    
+    .barraProductos .organizarProductos{
+        position: relative;
+        left: 55%;
+    }
+}
+
+.margenListaCarta{
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.justificarTexto{
+    text-align: justify;
+}
+
+@media (max-width:500px){
+
+    .barraProductos .mostrar{
+        
+        padding: 0;
+        margin-top: 70px;
+    }
+
+    .barraProductos .organizarProductos{
+        position: relative;
+        left: 0%;
+    }
+
+    .asignarPadding{
+        padding: 0;
+    }
+
+    .ocultarTitulo{
+        display: none;
+    }
+    
+}
+
+/* .paginador{
+    position: relative;
+    text-align: center;
+    left: 40%;
+} */

@@ -36,6 +36,43 @@ VENTANA MODAL PLANES
 </div>
 
 <!--=====================================
+VENTANA MODAL CARTA
+======================================-->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modalCarta">
+	
+	 <div class="modal-dialog">
+			
+		<div class="modal-content">
+			
+	      	<div class="modal-header bg-dark">
+	        	<h4 class="modal-title text-white"></h4>
+	        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	      	</div>
+			
+	 		<div class="modal-body">
+       			
+       			<img src="" class="img-thumbnail">
+    			
+    			<p class="py-2"></p>
+       			
+       			<div class="text-center">
+				   <a href="#habitaciones" class="btn btn-primary text-center btnModalPlan" data-dismiss="modal"><i class="fas fa-suitcase"></i> Separa tu habitación </a>
+        		</div>
+
+      		</div>
+
+  		 	<div class="modal-footer">
+        		<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times-circle"></i> Cerrar</button>
+      		</div>
+
+		</div> 	
+
+	 </div>
+
+</div>
+
+<!--=====================================
 VENTANA MODAL INGRESO
 ======================================-->
 

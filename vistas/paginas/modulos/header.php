@@ -119,7 +119,7 @@ HEADER
 
 			<!-- MENÚ HAMBURGUESA -->
 
-			<div class="grid-item mt-1 mt-sm-3 mt-md-4 mt-lg-2 botonMenu">
+			<div class="grid-item mt-2 mt-sm-3 mt-md-4 mt-lg-2 botonMenu">
 				
 				<i class="fas fa-bars lead"></i>
 
@@ -293,7 +293,7 @@ MENÚ MÓVIL
 		</li>
 
 		<li class="nav-item">
-			<a class="nav-link text-white my-2" href="#pueblo">Recorrido por el pueblo</a>
+			<a class="nav-link text-white my-2" href="#pueblo">Atracciones</a>
 		</li>
 
 		<li class="nav-item">

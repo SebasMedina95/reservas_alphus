@@ -42,12 +42,22 @@ RESTAURANTE
 
 			<div class="grid-item bloqueRestaurante">
 				
-				<h1 class="mt-4 my-lg-5">ALGUNOS PLATILLOS</h1>
+				<h1 class="mt-4 my-lg-5">NUESTRO RESTAURANTE</h1>
 
-				<p class="p-4 my-lg-5">En el Hotel Alphus nos encanta consentir tu paladar, tenemos una amplia cantidad de platillos, los cuales sin duda, harán que quieras repetir sin duda alguna, a continuación les presentamos algunos de nuestros platillos, pero sin duda, la carta es aún mas amplia; nuestros cocineros y camareros están ansiosos por brindarte una experiencia gastronómica y de atención inolvidables.</p>
+				<p class="p-1 my-lg-5">En el Hotel Alphus nos encanta consentir tu paladar, tenemos una amplia cantidad de platillos, los cuales sin duda, harán que quieras repetir sin duda alguna, a continuación les presentamos algunos de nuestros platillos, pero sin duda, la carta es aún mas amplia; nuestros cocineros y camareros están ansiosos por brindarte una experiencia gastronómica y de atención inolvidables.</p>
 
-				<button class="btn btn-warning text-uppercase mb-5 verCarta"><i class="fas fa-menorah"></i> <b>Ver Platillos</b> </button>
+				<div class="btn-group">
 
+					<button class="mr-3 btn btn-warning text-uppercase mb-5 verCarta"><i class="fas fa-menorah"></i> <b>Ver Platillos</b> </button>
+
+					<a href="../carta">
+
+						<button class="mr-3 btn btn-info text-uppercase mb-5"><i class="fas fa-book"></i> <b>Ver Mas ...</b> </button>
+					
+					</a>
+
+				</div>
+			
 			</div>
 			
 		</div>		

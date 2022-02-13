@@ -36,7 +36,7 @@ $(enlacesHabitaciones[0]).html("<i class='fas fa-chevron-right'></i>" + tituloBo
  *  ENLACES DE HABITACIONES
  *  ====================================================== */
 /**Cuando demos click en algún a */
-$(".cabeceraHabitacion ul.nav li.nav-item a").click(function(e){  
+$(".cabeceraHabitacion .dropdown .dropdown-menu a").click(function(e){  
     /**Anulamos los eventos por defecto */
     e.preventDefault();
     /**Capturamos lo que traemos en el atributo orden creado*/
@@ -65,7 +65,8 @@ $(".cabeceraHabitacion ul.nav li.nav-item a").click(function(e){
 	para evitar errores, y limpiamos el html.*/
 	for(let i = 0; i < listaSlide.length; i++){
 
-		/*Pongo la imagen en la altura antes de que borre las imagenes.*/
+		/*Pongo la imagen en la altura antes de que borre las imagenes.
+        Esrto con el fin de que cuando cargamos la imagen no aparezca por un momento superpuesto el título*/
 		$(".slideHabitaciones .slide-inner .slide-area").css({"height":alturaSlide+"px"})
 		$(listaSlide[i]).html("");
 
@@ -110,9 +111,20 @@ $(".cabeceraHabitacion ul.nav li.nav-item a").click(function(e){
             $(".descripcionHabitacion h1").html(respuesta[orden]["estilo"] + " " + respuesta[orden]["tipo"]);
             /**Capturo la clase para meter la descripción dinámicamente */
             $(".d-habitacion").html(respuesta[orden]["descripcion_h"]);
+            /**Capturo el id del Dropdown para refrescar lo que nos aparece allí */
+            $("#dropdown1").html(respuesta[orden]["tipo"] + " - Temática " + respuesta[orden]["estilo"]);
         }
     
     }) //Ajax
 
 }) //cabeceraHabitacion ul.nav li.nav-item a
+
+/** ****************************************************************************************  */
+/** ****************************************************************************************  */
+/** USANDO JS NATIVO Y, LAS VARIABLES ORDEN Y RUTA, VAMOS A INCORPORAR
+ *  UN SLIDE-CARRUSEL PARA MOSTRAR LOS TIPOS DE HABITACIÓN Y QUE, NO SEA
+ *  5 POR DEFECTO SI NO QUE PUEDAN SER MAS. */
+/** ****************************************************************************************  */
+/** ****************************************************************************************  */
+
 
