@@ -113,6 +113,8 @@ $(".cabeceraHabitacion .dropdown .dropdown-menu a").click(function(e){
             $(".d-habitacion").html(respuesta[orden]["descripcion_h"]);
             /**Capturo el id del Dropdown para refrescar lo que nos aparece allí */
             $("#dropdown1").html(respuesta[orden]["tipo"] + " - Temática " + respuesta[orden]["estilo"]);
+            /**Actualizamos el name para el formulario de consulta de disponibilidad desde categorías de habitación */
+            $('input[name="id-habitacion"]').val(respuesta[orden]["id_h"]);
         }
     
     }) //Ajax

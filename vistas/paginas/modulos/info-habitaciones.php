@@ -158,42 +158,53 @@ INFO HABITACIÓN
 					<p>Hora de entrada (Check in) 3:00 pm | Hora de salida (Check out) 1:00 pm</p>
 
 					<div class="container">
+						<!-- Trabajamos el formulario para mandar información con variables tipo POST -->
+						<form action="<?php echo $ruta; ?>reservas" method="POST">
 
-						<div class="row py-2" style="background:#509CC3">
+							<!-- Capturamos el id de la habitación y lo dejarémos oculto para usarlo -->
+							<input type="hidden" name="id-habitacion" value="<?php echo $habitaciones[0]["id_h"]; ?>">
 
-							 <div class="col-6 col-md-3 input-group pr-1">
-							
-								<input type="text" class="form-control datepicker entrada" placeholder="Entrada">
+							<!-- Vamos a capturar la ruta de la categoría para poder tenerla oculta y usarla si dado el caso, las reservas no me traen información 
+							de la habitación, este apartado es tremendamente importante, o si no no podremos habilitar nuevas reservas. Realizamos la captura y
+							mantenemos la información en el archivo de reservas.js - En el value asignamos de una vez la variable POST de ruta que me esta llegando
+							sea del micro formulario de reserva rápida o de info-habitación-->
+							<input type="hidden" id="ruta" name="ruta" value="<?php echo $habitaciones[0]["ruta"]; ?>">
 
-								<div class="input-group-append">
-									
-									<span class="input-group-text"><i class="far fa-calendar-alt small text-gray-dark"></i></span>
+							<div class="row py-2" style="background:#509CC3">
+
+								<div class="col-6 col-md-3 input-group pr-1">
 								
+									<input type="text" class="form-control datepicker entrada" placeholder="Entrada" autocomplete="off" name="fecha-ingreso" required>
+
+									<div class="input-group-append">
+										
+										<span class="input-group-text"><i class="far fa-calendar-alt small text-gray-dark"></i></span>
+									
+									</div>
+
+								</div>
+
+								<div class="col-6 col-md-3 input-group pl-1">
+								
+									<input type="text" class="form-control datepicker salida" placeholder="Salida" autocomplete="off" name="fecha-salida" required readonly>
+
+									<div class="input-group-append">
+										
+										<span class="input-group-text"><i class="far fa-calendar-alt small text-gray-dark"></i></span>
+									
+									</div>
+
+								</div>
+
+								<div class="col-12 col-md-6 mt-2 mt-lg-0 input-group">
+							
+									<input type="submit" class="btn btn-block btn-md text-white" value="Ver disponibilidad" style="background:black">	
+
 								</div>
 
 							</div>
 
-						 	<div class="col-6 col-md-3 input-group pl-1">
-							
-								<input type="text" class="form-control datepicker salida" placeholder="Salida">
-
-								<div class="input-group-append">
-									
-									<span class="input-group-text"><i class="far fa-calendar-alt small text-gray-dark"></i></span>
-								
-								</div>
-
-							</div>
-
-							<div class="col-12 col-md-6 mt-2 mt-lg-0 input-group">
-								
-								<a href="<?php echo $ruta;  ?>reservas" class="w-100">
-									<input type="button" class="btn btn-block btn-md text-white" value="Ver disponibilidad" style="background:black">	
-								</a>
-
-							</div>
-
-						</div>
+						</form>
 
 					</div>
 

@@ -32,5 +32,9 @@ require_once "modelos/habitaciones.modelo.php";
 require_once "controladores/carta.controlador.php";
 require_once "modelos/carta.modelo.php";
 
+/**RESERVAS DE HABITACIÓN */
+require_once "controladores/reservas.controlador.php";
+require_once "modelos/reservas.modelo.php";
+
 $plantilla = new ControladorPlantilla();
 $plantilla -> ctrPlantilla();

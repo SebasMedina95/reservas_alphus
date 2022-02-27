@@ -19,6 +19,19 @@ a:visited, a:link, a:focus, a:hover, a:active{
 	text-decoration: none;
 }
 
+.fc-today{
+	background: rgba(255, 255, 255, 0) !important;
+}
+
+.stprecios{
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+
+}
+
 /*=============================================
 HEADER
 =============================================*/
@@ -72,7 +85,12 @@ header .formReservas .input-group-lg input, header .formReservas select{
 	font-size:14px;
 }
 
-header .formReservas input[type="button"]{
+header .formReservas input[type="submit"]{
+	background:black;
+	font-size:16px;
+}
+
+.dispoBotonABC{
 	background:black;
 	font-size:16px;
 }
