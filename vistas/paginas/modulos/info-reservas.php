@@ -23,14 +23,16 @@ if(isset($_POST["id-habitacion"]) &&
 	si dejamos por defecto la posición 0, indicaríamos que solo sería la primera habitación que traiga y esa no es la idea*/
 	$indice = 0;
 
-	/**Si reservas viene vacío, entonces vamos a pedir la información al controlador de las habitaciones. 
+	/**Si reservas viene vacío, es decir, no tengo la habitación reservada en ningún momento, entonces vamos a pedir la información al controlador de las habitaciones. 
 	 * Cual es el proposito de esto: Ubicar la habitación que estamos trayendo y, usar el controlador de habitaciones, pero
 	 * el controlador lo tenemos buscando por la ruta de habitación, entonces, para no crear otro método, usemos el mismo pero
 	 * ubiquemos, a partir del id de habitación, la ruta para consultar y ubicar el indice para mostrar exactamente la info de 
-	 * habitación que necesitamos.
-	*/
+	 * habitación que necesitamos. */
 	if(!$reservas){
-		/**Capturo un nuevo valor para la variable que es la ruta que viene desde el header en el input oculto */
+		/**Capturo un nuevo valor para la variable que es la ruta que viene desde el header en el input oculto 
+		 * Este input oculto viene desde el header.php cuando es la reserva rápida y lo manejamos en los select anidados de reservas.js o
+		 * también viene desde infor-habitaciones.php cuando consultamos una reserva desde las mismas habitaciones.
+		*/
 		$valor = $_POST["ruta"];
 		/**Llamo la opción de mostrar habitaciones solamente */
 		$reservas = ControladorHabitaciones::ctrMostrarHabitaciones($valor);
@@ -330,7 +332,7 @@ INFO RESERVAS
 				  <select class="form-control elegirPlan">
 					<!-- Colocaremos un separador @ por si mas adelante para conmutar debemos usar un Split -->
 				  	<option value="<?php echo 'Continental'.'@'.$precioContinental ?>"><?php echo 'PLAN: Continental'.' - COSTO: $'.number_format($precioContinental , 0, ',', '.') ?></option>
-				  	<option value="<?php echo 'Amricano'.'@'.$precioAmericano ?>"><?php echo 'PLAN: Americano'.' - COSTO: $'.number_format($precioAmericano , 0, ',', '.') ?></option>
+				  	<option value="<?php echo 'Americano'.'@'.$precioAmericano ?>"><?php echo 'PLAN: Americano'.' - COSTO: $'.number_format($precioAmericano , 0, ',', '.') ?></option>
 				  	
 					<?php  
 
@@ -364,11 +366,20 @@ INFO RESERVAS
 
 				<hr>
 				
-				<a href="<?php echo $ruta;  ?>perfil">
+				<a href="<?php echo $ruta;  ?>perfil"
+					class="pagarReserva" 
+					idHabitacion="<?php echo $reservas[$indice]["id_h"]; ?>"
+					imgHabitacion="<?php echo $servidor.$galeria[0]; ?>"
+					infoHabitacion="Habitación <?php echo $reservas[$indice]["tipo"]." ".$reservas[$indice]["estilo"]; ?>"
+					pagoReserva="<?php echo ($precioContinental*$dias);?>"
+					codigoReserva=""
+					fechaIngreso="<?php echo $_POST["fecha-ingreso"];?>"
+					fechaSalida="<?php echo $_POST["fecha-salida"];?>"
+					plan="Plan Continental" 
+					personas="1"
+					dias="<?php echo $dias;?>">
 					<button class="btn btn-dark btn-lg w-100">REALIZAR RESERVA</button>
 				</a>
-
-				
 
 			</div>
 

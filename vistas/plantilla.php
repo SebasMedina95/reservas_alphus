@@ -10,7 +10,7 @@ $servidor = ControladorRuta::ctrServidor();
 <head>
 	<meta charset="UTF-8">
 
-	<meta name="viewport" content="width=device-width, initial-scale=1">	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
 	<title>Hotel Alphus</title>
 
@@ -117,6 +117,15 @@ $servidor = ControladorRuta::ctrServidor();
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 
+	<!-- PARA EL TEMA DE MERCADO PAGO 2022 - CHECKOUT API -->
+	<script src="https://sdk.mercadopago.com/js/v2"></script>
+
+	<!-- Sweet Alert -->
+    <!-- https://sweetalert2.github.io/ -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+	<!-- Encriptar con CryptJS -->
+	<script src="js/plugins/crypto-js.min.js"></script>
 
 
 

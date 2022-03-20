@@ -326,12 +326,14 @@ function colDerReservas(){
       if(!respuesta){
 
         $(".codigoReserva").html(codigoReserva);
+        $(".pagarReserva").attr("codigoReserva",codigoReserva );
 
       }else{
 
         /**Si dado el dificil caso de que se de, entonces ...
          * Anexamos dos caracteres más para que se diferencie. */
         $(".codigoReserva").html(codigoReserva + codigoAleatorioReserva(caracteres , 2));
+        $(".pagarReserva").attr("codigoReserva",codigoReserva+codigoAleatorio(caracteres, 2));
 
       }
 
@@ -368,12 +370,12 @@ function cambioPlanesPersonas(){
 
   /**Vamos a generar un valor % según la cantidad de personas
    * Si es 1 personas, el precio del plan por la cantidad de días
-   * Si es 2 personas, el precio del plan por la cantidad de días + 80%
-   * Si es 3 personas, el precio del plan por la cantidad de días + 80%
-   * Si es 4 personas, el precio del plan por la cantidad de días + 80%
-   * Si es 5 personas, el precio del plan por la cantidad de días + 75%
-   * Si es 6 personas, el precio del plan por la cantidad de días + 75%
-   * Si es 7 personas, el precio del plan por la cantidad de días + 75% 
+   * Si es 2 personas, el precio del plan por la cantidad de días + 80% aumento con descuento
+   * Si es 3 personas, el precio del plan por la cantidad de días + 80% aumento con descuento
+   * Si es 4 personas, el precio del plan por la cantidad de días + 80% aumento con descuento
+   * Si es 5 personas, el precio del plan por la cantidad de días + 75% aumento con descuento
+   * Si es 6 personas, el precio del plan por la cantidad de días + 75% aumento con descuento
+   * Si es 7 personas, el precio del plan por la cantidad de días + 75% aumento con descuento 
    * 
    * Consigna de operación para 2 personas en adelante:
    *    Se respeta el apartado anterior y:
@@ -399,6 +401,10 @@ function cambioPlanesPersonas(){
       $(".precioReserva").html(precioConDiasFormateado1);
       console.log("Entre por el case 1 persona" , dias , precioConDiasFormateado1);
 
+      $(".pagarReserva").attr("pagoReserva",$(".elegirPlan").val().split("@")[1] * dias)
+      $(".pagarReserva").attr("plan",$(".elegirPlan").val().split("@")[0]);
+      $(".pagarReserva").attr("personas",$(".cantidadPersonas").val());
+
     break;
 
     case '2':
@@ -408,6 +414,10 @@ function cambioPlanesPersonas(){
       let precioConDiasFormateado2 = formatterPeso.format(precioPara2Persona);
       $(".precioReserva").html(precioConDiasFormateado2);
       console.log("Entre por el case 2 persona" , dias , precioConDiasFormateado2);
+
+      $(".pagarReserva").attr("pagoReserva",Number($(".elegirPlan").val().split("@")[1] * dias + aumento2));
+      $(".pagarReserva").attr("plan",$(".elegirPlan").val().split("@")[0]);
+      $(".pagarReserva").attr("personas",$(".cantidadPersonas").val());
 
     break;
 
@@ -419,6 +429,10 @@ function cambioPlanesPersonas(){
       $(".precioReserva").html(precioConDiasFormateado3);
       console.log("Entre por el case 3 persona" , dias , precioConDiasFormateado3);
 
+      $(".pagarReserva").attr("pagoReserva",Number($(".elegirPlan").val().split("@")[1] * dias + aumento3));
+      $(".pagarReserva").attr("plan",$(".elegirPlan").val().split("@")[0]);
+      $(".pagarReserva").attr("personas",$(".cantidadPersonas").val());
+
     break;
 
     case '4':
@@ -428,6 +442,10 @@ function cambioPlanesPersonas(){
       let precioConDiasFormateado4 = formatterPeso.format(precioPara4Persona);
       $(".precioReserva").html(precioConDiasFormateado4);
       console.log("Entre por el case 4 persona" , dias , precioConDiasFormateado4);
+
+      $(".pagarReserva").attr("pagoReserva",Number($(".elegirPlan").val().split("@")[1] * dias + aumento4));
+      $(".pagarReserva").attr("plan",$(".elegirPlan").val().split("@")[0]);
+      $(".pagarReserva").attr("personas",$(".cantidadPersonas").val());
 
     break;
 
@@ -439,6 +457,10 @@ function cambioPlanesPersonas(){
       $(".precioReserva").html(precioConDiasFormateado5);
       console.log("Entre por el case 5 persona" , dias , precioConDiasFormateado5);
 
+      $(".pagarReserva").attr("pagoReserva",Number($(".elegirPlan").val().split("@")[1] * dias + aumento5));
+      $(".pagarReserva").attr("plan",$(".elegirPlan").val().split("@")[0]);
+      $(".pagarReserva").attr("personas",$(".cantidadPersonas").val());
+
     break;
 
     case '6':
@@ -448,6 +470,10 @@ function cambioPlanesPersonas(){
       let precioConDiasFormateado6 = formatterPeso.format(precioPara6Persona);
       $(".precioReserva").html(precioConDiasFormateado6);
       console.log("Entre por el case 6 persona" , dias , precioConDiasFormateado6);
+
+      $(".pagarReserva").attr("pagoReserva",Number($(".elegirPlan").val().split("@")[1] * dias + aumento6));
+      $(".pagarReserva").attr("plan",$(".elegirPlan").val().split("@")[0]);
+      $(".pagarReserva").attr("personas",$(".cantidadPersonas").val());
 
     break;
 
@@ -459,11 +485,359 @@ function cambioPlanesPersonas(){
       $(".precioReserva").html(precioConDiasFormateado7);
       console.log("Entre por el case 7 persona" , dias , precioConDiasFormateado7);
 
+      $(".pagarReserva").attr("pagoReserva",Number($(".elegirPlan").val().split("@")[1] * dias + aumento7));
+      $(".pagarReserva").attr("plan",$(".elegirPlan").val().split("@")[0]);
+      $(".pagarReserva").attr("personas",$(".cantidadPersonas").val());
+
     break;
 
   }
 
 }
+
+/*=============================================
+FUNCIÓN PARA GENERAR COOKIES
+=============================================*/
+
+function crearCookie(nombre, valor, diasExpedicion){
+
+  var hoy = new Date();
+  hoy.setTime(hoy.getTime() + (diasExpedicion * 24 * 60 * 60 * 1000));
+  var fechaExpedicion = "expires=" + hoy.toUTCString();
+  document.cookie = nombre + "=" + valor + "; " + fechaExpedicion;
+
+}
+
+/*=============================================
+CAPTURAR DATOS DE LA RESERVA
+=============================================*/
+
+$(".pagarReserva").click(function(){
+
+  let idHabitacion = $(this).attr("idHabitacion");
+  let imgHabitacion = $(this).attr("imgHabitacion");
+  let infoHabitacion = $(this).attr("infoHabitacion")+" - "+$(this).attr("plan")+" - "+$(this).attr("personas")+" personas. La cantidad de días dispuestos para su reserva es de "+$(this).attr("dias")+ " contados desde la fecha de inicio de la reserva y entrada.";
+  let pagoReserva = $(this).attr("pagoReserva");
+  let codigoReserva = $(this).attr("codigoReserva");
+  let fechaIngreso = $(this).attr("fechaIngreso");
+  let fechaSalida = $(this).attr("fechaSalida");
+  let dias = $(this).attr("dias");
+  
+  console.log("idHabitacion" , idHabitacion);
+  console.log("imgHabitacion" , imgHabitacion);
+  console.log("infoHabitacion" , infoHabitacion);
+  console.log("pagoReserva" , pagoReserva);
+  console.log("codigoReserva" , codigoReserva);
+  console.log("fechaIngreso" , fechaIngreso);
+  console.log("fechaSalida" , fechaSalida);
+  console.log("dias" , dias);
+
+  /**Nombre de la Cookie - Valor de la Cookie - Día expide */
+  crearCookie("idHabitacion", idHabitacion, 1);
+  crearCookie("imgHabitacion", imgHabitacion, 1);
+  crearCookie("infoHabitacion", infoHabitacion, 1);
+  crearCookie("pagoReserva", pagoReserva, 1);
+  crearCookie("codigoReserva", codigoReserva, 1);
+  crearCookie("fechaIngreso", fechaIngreso, 1);
+  crearCookie("fechaSalida", fechaSalida, 1);
+  crearCookie("dias", dias, 1);
+
+})
+
+/** *********************************************************************  */
+/** ******* VAMOS A TRABAJAR EL TEMA DE MERCADO PAGO POR AQUÍ ***********  */
+
+
+
+
+/*=============================================
+Función Sweetalert
+=============================================*/
+
+// function fncSweetAlert(type, text, url){
+
+//   switch (type) {
+
+//     /*=============================================
+//     Cuando ocurre un error
+//     =============================================*/
+//     case "error":
+//       if(url == null){
+//         Swal.fire({
+//           icon: 'error',
+//           title: 'Error',
+//           text: text
+//         }); 
+//       }else{
+//         Swal.fire({
+//           icon: 'error',
+//           title: 'Error',
+//           text: text
+//         }).then((result) => {
+//           if (result.value) { 
+//             window.open(url, "_top");
+//           }
+//         });
+//       }
+//     break;
+
+//     /*=============================================
+//     Cuando es correcto
+//     =============================================*/
+//     case "success":
+//       if(url == null){
+//         Swal.fire({
+//           icon: 'success',
+//           title: 'Success',
+//           text: text
+//         }); 
+//       }else{
+//         Swal.fire({
+//           icon: 'success',
+//           title: 'Success',
+//           text: text
+//         }).then((result) => {
+//           if (result.value) { 
+
+//             window.open(url, "_top");
+
+//           }
+//         }); 
+//       }
+//     break;
+
+//     /*=============================================
+//     Cuando estamos precargando
+//     =============================================*/
+//     case "loading":
+//       Swal.fire({
+//         allowOutsideClick: false,
+//         icon: 'info',
+//         text:text
+//       });
+//       Swal.showLoading()
+//     break;  
+
+//     /*=============================================
+//     Cuando necesitamos cerrar la alerta suave
+//     =============================================*/
+//     case "close":
+//       Swal.close()
+//     break;
+
+//     /*=============================================
+//     Cuando solicitamos confirmación
+//     =============================================*/
+
+//     case "confirm":
+//       return new Promise(resolve=>{ 
+//         Swal.fire({
+//           text: text,
+//           icon: 'warning',
+//           showCancelButton: true,
+//           confirmButtonColor: '#3085d6',
+//           cancelButtonColor: '#d33',
+//           cancelButtonText: 'Cancel',
+//           confirmButtonText: 'Yes, delete!'
+//         }).then(function(result){
+//           resolve(result.value);
+//         })
+//       })
+//     break;
+
+//     /*=============================================
+//     Cuando necesitamos incorporar un HTML
+//     =============================================*/
+//     case "html":
+//       Swal.fire({
+//         allowOutsideClick: false,
+//         title: 'Pago de Reserva',
+//         icon: 'info',
+//         html:text,
+//         showConfirmButton: false,
+//         showCancelButton: true,
+//         cancelButtonText: 'Cancelar Pago',
+//         cancelButtonColor: '#d33'
+//       });
+//     break;
+//   } /**Cierro Swith */
+
+// } /**Cierro función SweetAlert */
+
+// $(".pagoConMercadoPago").click(function(e){
+
+//   /**Anulamos los eventos por defecto */
+//   e.preventDefault();
+
+//   let DescripcionHabitacion = $(this).attr("infoHabitacion");
+//   console.log("DescripcionHabitacion" , DescripcionHabitacion);
+
+//   const mp = new MercadoPago('TEST-9b199dbd-533a-463d-bd97-35b5deab52b0');
+
+//   const formMp = 
+
+//     `
+//     <img src="../vistas/img/payment-method/mp_logo.png" style="width:200px" class="pb-3" />
+
+//     <div class="card bg-light mb-3">
+//       <div class="card-header">Descripción del Pago: </div>
+//       <div class="card-body">
+//         <p class="card-text">${ DescripcionHabitacion }</p>
+//       </div>
+//     </div>
+
+//     <form id="form-checkout" >
+
+//     <div class="form-row">
+//         <div class="col">
+//           <div class="input-group mb-3">
+//             <div class="input-group-prepend">
+//               <span class="input-group-text"><i class="far fa-credit-card"></i></span>
+//             </div>
+//             <input oncopy="return false" onpaste="return false" type="text" class="form-control" name="cardNumber" id="form-checkout__cardNumber" />
+//           </div>
+//         </div>
+//         <div class="col">
+//           <div class="input-group mb-3">
+//             <div class="input-group-prepend">
+//               <span class="input-group-text">MM/YY</span>
+//             </div>
+//             <input oncopy="return false" onpaste="return false" type="text" class="form-control" name="cardExpirationDate" id="form-checkout__cardExpirationDate" />
+//           </div>
+//         </div>
+//       </div>
+
+//       <div class="input-group mb-3">
+//         <div class="input-group-prepend">
+//           <span class="input-group-text"><i class="far fa-user"></i></span>
+//         </div>
+//         <input oncopy="return false" onpaste="return false" type="text" class="form-control" name="cardholderName" id="form-checkout__cardholderName"/>
+//       </div>
+
+//       <div class="input-group mb-3">
+//         <div class="input-group-prepend">
+//           <span class="input-group-text"><i class="far fa-envelope"></i></span>
+//         </div>
+//         <input oncopy="return false" onpaste="return false" type="email" class="form-control" name="cardholderEmail" id="form-checkout__cardholderEmail"/>
+//       </div>
+
+
+//       <div class="form-row">
+//         <div class="col">
+//           <div class="input-group mb-3">
+//             <div class="input-group-prepend">
+//               <span class="input-group-text">CVV/CVC</span>
+//             </div>
+//             <input oncopy="return false" onpaste="return false" type="text" class="form-control" name="securityCode" id="form-checkout__securityCode" />
+//           </div>
+//         </div>
+
+//         <div class="col">
+//           <div class="input-group mb-3">
+//             <div class="input-group-prepend">
+//               <span class="input-group-text"><i class="fas fa-university"></i></span>
+//             </div>
+//             <select class="form-control" name="issuer" id="form-checkout__issuer"></select>
+//           </div>
+//         </div>
+//       </div>
+
+//       <div class="form-row">
+//         <div class="col">
+//           <div class="input-group mb-3">
+//             <div class="input-group-prepend">
+//               <span class="input-group-text"><i class="fas fa-address-card"></i></span>
+//             </div>
+//             <select class="form-control" name="identificationType" id="form-checkout__identificationType"></select>
+//           </div>
+//         </div>
+
+//         <div class="col">
+//           <div class="input-group mb-3">
+//             <div class="input-group-prepend">
+//               <span class="input-group-text">#</span>
+//             </div>
+//             <input oncopy="return false" onpaste="return false" class="form-control" type="text" name="identificationNumber" id="form-checkout__identificationNumber"/>
+//           </div>
+//         </div>
+//       </div>
+
+//       <div class="input-group mb-3">
+//         <div class="input-group-prepend">
+//           <span class="input-group-text"><i class="fas fa-list"></i></span>
+//         </div>
+//         <select class="form-control" name="installments" id="form-checkout__installments"></select>
+//       </div>
+
+//       <button class="btn btn-primary btn-lg btn-block" type="submit" id="form-checkout__submit"><i class="fas fa-concierge-bell"></i> Pagar la Reserva</button>
+
+//     </form>`;
+
+//   fncSweetAlert("html", formMp, null);
+
+//   // Step #3
+//   const cardForm = mp.cardForm({
+//     amount: "1750000",
+//     autoMount: true,
+//     form: {
+//       id: "form-checkout",
+//       cardholderName: {
+//         id: "form-checkout__cardholderName",
+//         placeholder: "Titular de la tarjeta ...",
+//       },
+//       cardholderEmail: {
+//         id: "form-checkout__cardholderEmail",
+//         placeholder: "E-mail del Titular ...",
+//       },
+//       cardNumber: {
+//         id: "form-checkout__cardNumber",
+//         placeholder: "# Tarjeta ...",
+//       },
+//       cardExpirationDate: {
+//         id: "form-checkout__cardExpirationDate",
+//         placeholder: "Vencimiento",
+//       },
+//       securityCode: {
+//         id: "form-checkout__securityCode",
+//         placeholder: "Código ...",
+//       },
+//       installments: {
+//         id: "form-checkout__installments",
+//         placeholder: "Cantidad de Cuotas ...",
+//       },
+//       identificationType: {
+//         id: "form-checkout__identificationType",
+//         placeholder: "Tip. Documento",
+//       },
+//       identificationNumber: {
+//         id: "form-checkout__identificationNumber",
+//         placeholder: "Nro. Documento ...",
+//       },
+//       issuer: {
+//         id: "form-checkout__issuer",
+//         placeholder: "Emisor",
+//       },
+//     },
+//     callbacks: {
+
+//       onFormMounted: function(error){
+//         if(error) return console.log("Callback Handling Error " , error);
+//       },
+//       onCardTokenReceived: function(error , token){
+//         if(error) return console.log("Callback Handling Error " , error);
+//         const formData = cardForm.getCardFormData();
+//         console.log("form Data: " , formData);
+//       },    
+//     }
+
+//   })
+
+//   document.getElementById('form-checkout').addEventListener('submit', function(e){
+//     e.preventDefault();
+//     cardForm.createCardToken();
+//   })
+
+// })/**Función detonada con un click */
 
 
 

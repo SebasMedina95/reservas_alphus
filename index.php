@@ -1,5 +1,8 @@
 <?php
 
+/**VAMOS A REQUERIR EL AUTOLOAD PARA LAS API */
+require_once "extensiones/vendor/autoload.php";
+
 /**PLANTILLA Y RUTA */
 require_once "controladores/plantilla.controlador.php";
 require_once "controladores/ruta.controlador.php";
