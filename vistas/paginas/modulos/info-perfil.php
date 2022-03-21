@@ -2,6 +2,11 @@
 
 if(isset($_COOKIE["idHabitacion"])){
 
+	/**TODO: Debemos validar si la persona anteriormente no tiene otras reservas en estado 3,
+	 * para simular el comportamienot del as cookies completamente, si se encuentra una anterior en esta condicion, 
+	 * lo que se hará es que se actualizara la pre reserva con los nuevos datos.
+	 */
+
 	$valIdHabitaci = $_COOKIE["idHabitacion"];
 	$valValorPagar = $_COOKIE["pagoReserva"];
 	$valCodReserva = $_COOKIE["codigoReserva"];
@@ -10,18 +15,102 @@ if(isset($_COOKIE["idHabitacion"])){
 	$valFechaSalid = $_COOKIE["fechaSalida"];
 	$valDiasEstadi = $_COOKIE["dias"]; 
 	$valImgHabitac = $_COOKIE["imgHabitacion"];
+	$usuario = '1'; /**Esto debemos ponerlo dinámico ... */
+	/**Estados: 1. Pagado, 2. Cancelado, 3.Espera */
+	$estado = '3';
 
-	/**PROPUESTA
-	 * Cuando estemos en este punto, mandamos como Cookie el ID de reserva, anteriormente habremos
-	 * guardadi ka reserva pero en estado de espera, y si todo marcha bien ypaga, el estado de la
-	 * reserva pasara a pagada y con esto controlamos lo que realmente vamos a trabajar y protejemos
-	 * el valor para no enviarlo por una cookie que puede ser vulnearada
-	 * 
-	 * Basicamente, registramos la reseerrva con un estado de espera, y si la transacción se realiza,
-	 * el estado cambia y podremos usarlo como reserva de usuario.
-	 */
+	/**Pregunto si primero este usuario no tiene una pre reserva registrada de la cual se debe hacer cargo: */
+	$mostrarPreReserva = ControladorReservas::ctrMostrarPreReserva($usuario);
 
-	/**Mato ahora las cookies */
+	if($mostrarPreReserva){
+
+		echo 'Swal.fire({
+			position: "bottom",
+			icon: "success",
+			title: "HABÍAN PRE RESERVAS - ACTUALIZAMOS.",
+			showConfirmButton: false,
+			timer: 3000
+		  }).then(function(result){
+
+			if(result.value){   
+				history.back();
+			} 
+		});';
+
+		/**Tienes una pre reserva pendiente por procesar, por ende, esta será la que te mostraré
+		 * Ahora, solaparé estos valores con la reserva que ya existe en la BD con lo nuevo que haya
+		 * realizado el cliente al reservar */
+
+		/**Me traigo la reserva para tener el foco de actualización */
+		$pre_id_reserva = $mostrarPreReserva["id_reserva"];
+
+		/**Actualizo con las nuevas cookies: */
+		$actualizarPreReserva = ControladorReservas::ctrActualizarPreReserva($pre_id_reserva, $valIdHabitaci, $usuario, $valValorPagar, $valCodReserva, $valDescriRese, $valFechaIngre, $valFechaSalid, $estado, $valDiasEstadi);
+
+		/**Traigo nuevamente la última reserva pero actualizada */
+		$traerPreReservaUpdate = ControladorReservas::ctrMostrarPreReserva($usuario);
+
+		/**Defino las variables que me trae la consulta */
+		$pre_id_reserva = $traerPreReservaUpdate["id_reserva"];
+		$pre_id_habitacion = $traerPreReservaUpdate["id_habitacion"];
+		$pre_id_usuario = $traerPreReservaUpdate["id_usuario"];
+		$pre_pago_reserva = $traerPreReservaUpdate["pago_reserva"];
+		$pre_codigo_reserva = $traerPreReservaUpdate["codigo_reserva"];
+		$pre_descripcion_reserva = $traerPreReservaUpdate["descripcion_reserva"];
+		$pre_fecha_ingreso = $traerPreReservaUpdate["fecha_ingreso"];
+		$pre_fecha_salida = $traerPreReservaUpdate["fecha_salida"];
+		$pre_fecha_reserva = $traerPreReservaUpdate["fecha_reserva"];
+		$pre_estado_pago = $traerPreReservaUpdate["estado_pago"];
+		$pre_dias_reserva = $traerPreReservaUpdate["dias"];
+
+		$galeria = json_decode($traerPreReservaUpdate["galeria"], true);
+
+		$pre_imagen_habitacion = $servidor.$galeria[0];
+
+	}else{
+
+		echo 'Swal.fire({
+			position: "bottom",
+			icon: "success",
+			title: "NO HABÍAN PRE RESERVAS - INSERTAMOS.",
+			showConfirmButton: false,
+			timer: 3000
+		  }).then(function(result){
+
+			if(result.value){   
+				history.back();
+			} 
+		});';
+
+		/**No tienes pre reservas, por tanto colocaremos la nueva que se está realizando */
+		/**Vamos a insertar primero la data con un estado de espera. */
+		$preReserva = ControladorReservas::ctrInsertarPreReserva($valIdHabitaci, $usuario, $valValorPagar, $valCodReserva, $valDescriRese, $valFechaIngre, $valFechaSalid, $estado, $valDiasEstadi);
+
+		/**Ahora, como se pre inserto, aún si alteran las cookies, por medio de una consulta
+		 * SQL que busque por el usuairo activo y la ultima reserva registrada por su fecha podemos obtener la data que necesitamos
+		 * para mandar a los parámetros las pasarelas de pago. **/
+
+		$traerPreReservaInsert = ControladorReservas::ctrMostrarPreReserva($usuario);
+
+		/**Defino las variables que me trae la consulta */
+		$pre_id_reserva = $traerPreReservaInsert["id_reserva"];
+		$pre_id_habitacion = $traerPreReservaInsert["id_habitacion"];
+		$pre_id_usuario = $traerPreReservaInsert["id_usuario"];
+		$pre_pago_reserva = $traerPreReservaInsert["pago_reserva"];
+		$pre_codigo_reserva = $traerPreReservaInsert["codigo_reserva"];
+		$pre_descripcion_reserva = $traerPreReservaInsert["descripcion_reserva"];
+		$pre_fecha_ingreso = $traerPreReservaInsert["fecha_ingreso"];
+		$pre_fecha_salida = $traerPreReservaInsert["fecha_salida"];
+		$pre_fecha_reserva = $traerPreReservaInsert["fecha_reserva"];
+		$pre_estado_pago = $traerPreReservaInsert["estado_pago"];
+		$pre_dias_reserva = $traerPreReservaInsert["dias"];
+
+		$galeria = json_decode($traerPreReservaInsert["galeria"], true);
+
+		$pre_imagen_habitacion = $servidor.$galeria[0];
+	}
+
+	/**Mato las Cookies por que ya obtuve la data */
 	echo '<script>
 								    	
 			document.cookie = "idHabitacion=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path='.$ruta.';";
@@ -33,25 +122,36 @@ if(isset($_COOKIE["idHabitacion"])){
 			document.cookie = "fechaSalida=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path='.$ruta.';";
 			document.cookie = "dias=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path='.$ruta.';";
 			
-			Swal.fire({
-				position: "bottom",
-				icon: "success",
-				title: "Se inicia el proceso de pago, si sale de está página o la actualiza tendrá que volver a generar la reserva.",
-				showConfirmButton: false,
-				timer: 4500
-			  }).then(function(result){
 
-				if(result.value){   
-					history.back();
-				} 
-			});
+		</script>';
 
-		</script>';	
+}else{
+
+	$usuario = '1'; /**Esto debemos ponerlo dinámico ... */
+	/**La Cookie no existe, entonces generamos la consulta ... */
+	$traerPreReserva = ControladorReservas::ctrMostrarPreReserva($usuario);
+
+	if($traerPreReserva){
+		/**Defino las variables que me trae la consulta */
+		$pre_id_reserva = $traerPreReserva["id_reserva"];
+		$pre_id_habitacion = $traerPreReserva["id_habitacion"];
+		$pre_id_usuario = $traerPreReserva["id_usuario"];
+		$pre_pago_reserva = $traerPreReserva["pago_reserva"];
+		$pre_codigo_reserva = $traerPreReserva["codigo_reserva"];
+		$pre_descripcion_reserva = $traerPreReserva["descripcion_reserva"];
+		$pre_fecha_ingreso = $traerPreReserva["fecha_ingreso"];
+		$pre_fecha_salida = $traerPreReserva["fecha_salida"];
+		$pre_fecha_reserva = $traerPreReserva["fecha_reserva"];
+		$pre_estado_pago = $traerPreReserva["estado_pago"];
+		$pre_dias_reserva = $traerPreReserva["dias"];
+	
+		$galeria = json_decode($traerPreReserva["galeria"], true);
+	
+		$pre_imagen_habitacion = $servidor.$galeria[0];
+
+	}
 
 }
-
-
-/**TODO: Vamos a intentar guardar el valor de las cookies en el controlador de reservas antes de continuar en este punto ... */
 
 ?>
 
@@ -81,6 +181,8 @@ INFO PERFIL
 
 					<h1 class="text-white p-2 pb-lg-5 text-center text-lg-left">MI PERFIL</h1>	
 				</div>
+
+				<?php //echo '<pre class"bg-white">'; print_r($mostrarPreReserva); echo '</pre>' ?>
 
 				<!--=====================================
 				PERFIL
@@ -214,7 +316,7 @@ INFO PERFIL
 					<!-- Implementación de MercadoPago -->
 					<div class="col-12">
 
-						<?php if(isset($_COOKIE["idHabitacion"])) : ?>
+						<?php if(isset($pre_codigo_reserva)) : ?>
 
 							<div class="card">
 
@@ -226,21 +328,23 @@ INFO PERFIL
 
 								<div class="card-body text-center mb-2">
 
-									<h5><?php echo $_COOKIE["infoHabitacion"]; ?></h5>
+									<h5><?php echo '<b>Identificación de Reserva: </b>'.$pre_codigo_reserva; ?></h5>
+
+									<h5><?php echo $pre_descripcion_reserva; ?></h5>
 									
-									<input type="hidden" id="infoHabitacion" name="infoHabitacion" class="infoHabitacion" value="<?php echo $_COOKIE["infoHabitacion"]; ?>">
+									<input type="hidden" id="infoHabitacion" name="infoHabitacion" class="infoHabitacion" value="<?php echo $pre_descripcion_reserva; ?>">
 									
 									<figure>
 
-										<img src="<?php echo $_COOKIE["imgHabitacion"]; ?>" class="img-thumbnail w-60">
+										<img src="<?php echo $pre_imagen_habitacion; ?>" class="img-thumbnail w-60">
 
 									</figure>							
 
-									<h6> Fechas <?php echo $_COOKIE["fechaIngreso"]; ?> - <?php echo $_COOKIE["fechaSalida"];; ?></h6>
+									<h6> Fechas <?php echo $pre_fecha_ingreso; ?> - <?php echo $pre_fecha_salida; ?></h6>
 
-									<h6> Días calculados de reserva: <?php echo $_COOKIE["dias"]; ?> </h6>
+									<h6> Días calculados de reserva: <?php echo $pre_dias_reserva; ?> </h6>
 
-									<h4>$<?php echo number_format($_COOKIE["pagoReserva"], 0, ',', '.'); ?></h4>
+									<h4>$<?php echo number_format($pre_pago_reserva, 0, ',', '.'); ?></h4>
 
 									<hr>
 
@@ -273,10 +377,10 @@ INFO PERFIL
 
 												$item = new MercadoPago\Item();
 
-												$item->id = $valCodReserva;
-												$item->title = $valDescriRese;
+												$item->id = $pre_id_habitacion;
+												$item->title = "Reserva: " . $pre_codigo_reserva . " - Descripción del pedido: " .$pre_descripcion_reserva;
 												$item->quantity = 1;
-												$item->unit_price = $valValorPagar;
+												$item->unit_price = $pre_pago_reserva;
 												$item->currency_id = "COP";
 												
 												$preference->items = array($item);
