@@ -39,5 +39,9 @@ require_once "modelos/carta.modelo.php";
 require_once "controladores/reservas.controlador.php";
 require_once "modelos/reservas.modelo.php";
 
+/**USUARIOS DEL SISTEMA */
+require_once "controladores/usuarios.controlador.php";
+require_once "modelos/usuarios.modelo.php";
+
 $plantilla = new ControladorPlantilla();
 $plantilla -> ctrPlantilla();

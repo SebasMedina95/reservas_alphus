@@ -20,6 +20,24 @@ class ModeloReservas{
 
     }
 
+    /**MOSTRAMOS TODAS LAS HABITACIONES(Tabla1) - RESERVAS(Tabla2) - CATEGORIAS(Tabla3) 
+     * ESTA ES IDENTICA A LA ANTERIOR, PERO LUEGO LA DINAMIZAMOS, EL CAMBIO ES EL ESTADO DE PAGO.
+    */
+    static public function mdlMostrarPreReservas($tabla1, $tabla2, $tabla3, $valor){
+
+        /**Traigo la información común entre habitaciones y categorías con base al id y lo uno con un tercer que sería la reserva. */
+        $stmt = Conexion::conectar()->prepare("SELECT $tabla1.* , $tabla2.* , $tabla3.* FROM $tabla1 INNER JOIN $tabla2 ON $tabla1.id_h = $tabla2.id_habitacion INNER JOIN $tabla3 ON $tabla1.tipo_h = $tabla3.id WHERE id_h = :id_h AND $tabla2.estado_pago = '3'");
+        /**Enlazamos el parámetro */
+        $stmt -> bindParam(":id_h", $valor, PDO::PARAM_STR);
+
+        $stmt -> execute();
+        return $stmt->fetchAll();
+
+        /**Cerramos sentencia y conexión */
+        $stmt = null;
+
+    }
+
     /**MOSTRAMOS LAS RESERVAS PERO POR CÓDIGO */
     static public function mdlMostrarCodigoReservas($tabla , $valor){
         
@@ -114,6 +132,71 @@ class ModeloReservas{
 		$stmt = null;
 
     }
+
+    static public function mdlAjustarReserva($tabla1, $reserva, $payment, $order_id, $type_trans, $pasarela, $estado){
+
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla1 SET $tabla1.numero_transaccion=:payment,$tabla1.orden_transaccion=:order_id,$tabla1.medio_transaccion=:type_trans,$tabla1.pasarela_pago=:pasarela,$tabla1.estado_pago=:estado WHERE $tabla1.codigo_reserva = :reserva");
+
+        $stmt->bindParam(":reserva", $reserva, PDO::PARAM_STR);
+        $stmt->bindParam(":payment", $payment, PDO::PARAM_STR);
+		$stmt->bindParam(":order_id", $order_id, PDO::PARAM_STR);
+		$stmt->bindParam(":type_trans", $type_trans, PDO::PARAM_STR);
+		$stmt->bindParam(":pasarela", $pasarela, PDO::PARAM_STR);
+		$stmt->bindParam(":estado", $estado, PDO::PARAM_STR);
+
+        if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			return "error";
+		
+		}
+
+		$stmt = null;
+
+    }
+
+    /**Eliminamos la pre reserva si dado el caso ya se venció la Cookie que rige el proceso de la reserva en el perfil */
+    static public function mdlEliminarPreReserva($tabla1, $reserva){
+
+        $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla1 WHERE $tabla1.codigo_reserva = :reserva");
+
+        $stmt->bindParam(":reserva", $reserva, PDO::PARAM_STR);
+
+        if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			return "error";
+		
+		}
+
+		$stmt = null;
+
+    }
+
+    /**Mostrar reserva respecto al usuario logeado */
+    /**MOSTRAMOS TODAS LAS HABITACIONES(Tabla1) - RESERVAS(Tabla2) - CATEGORIAS(Tabla3) */
+    static public function mdlMostrarReservasUsuario($tabla1, $tabla2, $tabla3, $usuario){
+
+        /**Traigo la información común entre habitaciones y categorías con base al id y lo uno con un tercer que sería la reserva. */
+        $stmt = Conexion::conectar()->prepare("SELECT $tabla1.* , $tabla2.* , $tabla3.* FROM $tabla1 INNER JOIN $tabla2 ON $tabla1.id_h = $tabla2.id_habitacion INNER JOIN $tabla3 ON $tabla1.tipo_h = $tabla3.id WHERE $tabla2.estado_pago = '1' AND $tabla2.id_usuario = :usuario ");
+        /**Enlazamos el parámetro */
+        $stmt -> bindParam(":usuario", $usuario, PDO::PARAM_INT);
+
+        $stmt -> execute();
+        return $stmt->fetchAll();
+
+        /**Cerramos sentencia y conexión */
+        $stmt = null;
+
+    }
+
+
 
 }
 

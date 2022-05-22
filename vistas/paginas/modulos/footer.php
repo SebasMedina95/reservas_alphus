@@ -1,7 +1,7 @@
 <!--=====================================
 CONTÁCTENOS
 ======================================-->
-
+<!-- 
 <div class="contactenos container-fluid bg-white py-4" id="contactenos">
 	
 	<div class="container text-center">
@@ -34,7 +34,7 @@ CONTÁCTENOS
 
 	</div>
 
-</div>
+</div> -->
 
 <!--=====================================
 MAPA

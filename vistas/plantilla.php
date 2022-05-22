@@ -1,5 +1,6 @@
 <?php
 
+session_start(); /**Para manejar variables de sesión ... */
 $ruta = ControladorRuta::ctrRuta();
 $servidor = ControladorRuta::ctrServidor();
 
@@ -87,6 +88,10 @@ $servidor = ControladorRuta::ctrServidor();
 	<!-- https://fullcalendar.io/docs/background-events-demo -->	
 	<script src="js/plugins/fullcalendar.min.js"></script>
 
+	<!-- MD5 Encrypt -->
+	<!-- Encriptar en modo MD5 -->
+	<script src="js/plugins/md5-min.js"></script>
+
 	<!--=====================================
 	VÍNCULOS PARA TODO EL TEMA DE DATATABLES
 	======================================-->
@@ -117,8 +122,11 @@ $servidor = ControladorRuta::ctrServidor();
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 
-	<!-- PARA EL TEMA DE MERCADO PAGO 2022 - CHECKOUT API -->
+	<!-- PARA EL TEMA DE MERCADO PAGO 2022 - CHECKOUT PRO -->
 	<script src="https://sdk.mercadopago.com/js/v2"></script>
+
+	<!-- PARA EL TEMA DE LA API DE PAYPAL 2022 -->
+	<script src="https://www.paypal.com/sdk/js?client-id=AfPw6xeLUyRpTG05i7pw6vlLzvRsNadhRusNgvr-HNqqBf24jIRmpfBVEqiDaDXtk7PXjWaUW4wY77PT&currency=USD"></script>
 
 	<!-- Sweet Alert -->
     <!-- https://sweetalert2.github.io/ -->
@@ -130,11 +138,15 @@ $servidor = ControladorRuta::ctrServidor();
 
 
 </head>
-<body>
+<body onload="deshabilitaRetroceso()">
 
 <?php
 
 include "paginas/modulos/header.php";
+
+/**Por la naturaleza del Front así como encotrarsen en posición Fixed y que no se cruce con las demás páginas, ubicamos estos modales
+ * por encima de las demás páginas para evitar errores */
+include "paginas/modulos/modal.php";
 
 /*=============================================
 PÁGINAS
@@ -162,6 +174,38 @@ if(isset($_GET["pagina"])){
 
 	}
 
+	/**Validamos el correo electrónico */
+	$item = "email_encriptado";
+	$valor = $_GET["pagina"]; /**Lo que sigue luego del dominio, es el email encriptado */
+	$validarCorreo = ControladorUsuarios::ctrMostrarUsuario($item, $valor);
+
+	if($validarCorreo){
+		
+		if($validarCorreo["email_encriptado"] == $_GET["pagina"]){
+			/**Actualizamos en la base de datos */
+			$id = $validarCorreo["id_u"];
+			$item = "verificacion";
+			$valor = 1;
+			$verificarUsuario = ControladorUsuarios::ctrActualizarUsuario($id, $item, $valor);
+			
+			if($verificarUsuario == "ok"){
+				/**Correo validado */
+	
+				echo "<script>
+	
+						window.location.replace('http://localhost/reservas-alphus/cuenta-verificada');
+	
+					</script>";
+	
+				return;
+	
+			}
+
+		}
+
+	}
+
+
 	/**Generaremos la lista blanca para el tema de la carta*/
 	$rutasCarta = ControladorCarta::ctrMostrarCartaCount();
 
@@ -175,8 +219,8 @@ if(isset($_GET["pagina"])){
 
 	}
 
-
-	if($rutas[0] == "reservas" || $rutas[0] == "perfil" || $rutas[0] == "carta"){
+	/**Lista blanca de páginas internas */
+	if($rutas[0] == "reservas" || $rutas[0] == "perfil" || $rutas[0] == "carta" || $rutas[0] == "perfil-pre" || $rutas[0] == "cuenta-verificada" || $rutas[0] == "salir"){
 
 		include "paginas/".$rutas[0].".php"; //Lo que nos traiga la URL .php
 
@@ -196,8 +240,6 @@ PÁGINAS
 
 include "paginas/modulos/footer.php";
 
-include "paginas/modulos/modal.php";
-
 ?>
 
 <input type="hidden" value="<?php echo $ruta ?>" id="urlPrincipal">
@@ -205,10 +247,32 @@ include "paginas/modulos/modal.php";
 
 <script src="js/plantilla.js"></script>
 <script src="js/carta.js"></script>
+<script src="js/listaReservas.js"></script>
 <script src="js/menu.js"></script>
 <script src="js/idiomas.js"></script>
 <script src="js/habitaciones.js"></script>
 <script src="js/reservas.js"></script>
+<script src="js/usuarios.js"></script>
+
+<!-- VAMOS A INCORPORAR EL SCRIPT NECESARIO PARA FACEBOOK -->
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '359932816188630',
+      xfbml      : true,
+      version    : 'v13.0'
+    });
+    FB.AppEvents.logPageView();
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
 	
 </body>
 </html>

@@ -154,8 +154,8 @@ INFO RESERVAS
 				
 				<div class="pt-4 cabeceraReservas">
 					
-					<a href="<?php echo $ruta;  ?>habitaciones" class="float-left lead text-white pt-1 px-3">
-						<h5><i class="fas fa-chevron-left"></i> Regresar</h5>
+					<a href="<?php echo $ruta;  ?>" class="btn btn-secondary text-white">
+						<span><i class="fas fa-chevron-left"></i> Regresar</span>
 					</a>
 
 					<div class="clearfix"></div>
@@ -164,8 +164,21 @@ INFO RESERVAS
 
 					<h6 class="float-right px-3">
 
-						<br>
-						<a href="<?php echo $ruta;  ?>perfil" style="color:#FFCC29">Ver tus reservas</a>
+						<?php if(isset($_SESSION["validarSesion"])): ?>
+
+							<?php if($_SESSION["validarSesion"] == "ok"): ?>
+
+								<br>
+								<a href="<?php echo $ruta;  ?>perfil" style="color:#FFCC29">Ver tus reservas</a>
+
+							<?php endif; ?>
+
+						<?php else: ?>
+
+							<br>
+							<a href="#modalIngreso" data-toggle="modal" style="color:#FFCC29">Ver tus reservas</a>
+						
+						<?php endif; ?>
 
 					</h6>
 
@@ -365,21 +378,47 @@ INFO RESERVAS
 				<h1 class="precioReserva stprecios"><?php echo '$'.number_format($precioContinental*$dias, 0, ',', '.'); ?></h1>
 
 				<hr>
+
+				<?php if(isset($_SESSION["validarSesion"])): ?>
+
+					<?php if($_SESSION["validarSesion"] == "ok"): ?>
+
+						<a href="<?php echo $ruta;  ?>perfil"
+							class="pagarReserva" 
+							idHabitacion="<?php echo $reservas[$indice]["id_h"]; ?>"
+							imgHabitacion="<?php echo $servidor.$galeria[0]; ?>"
+							infoHabitacion="Habitación <?php echo $reservas[$indice]["tipo"]." ".$reservas[$indice]["estilo"]; ?>"
+							pagoReserva="<?php echo ($precioContinental*$dias);?>"
+							codigoReserva=""
+							fechaIngreso="<?php echo $_POST["fecha-ingreso"];?>"
+							fechaSalida="<?php echo $_POST["fecha-salida"];?>"
+							plan="Plan Continental" 
+							personas="1"
+							dias="<?php echo $dias;?>">
+							<button class="btn btn-dark btn-lg w-100">REALIZAR RESERVA</button>
+						</a>
+
+					<?php endif; ?>
 				
-				<a href="<?php echo $ruta;  ?>perfil"
-					class="pagarReserva" 
-					idHabitacion="<?php echo $reservas[$indice]["id_h"]; ?>"
-					imgHabitacion="<?php echo $servidor.$galeria[0]; ?>"
-					infoHabitacion="Habitación <?php echo $reservas[$indice]["tipo"]." ".$reservas[$indice]["estilo"]; ?>"
-					pagoReserva="<?php echo ($precioContinental*$dias);?>"
-					codigoReserva=""
-					fechaIngreso="<?php echo $_POST["fecha-ingreso"];?>"
-					fechaSalida="<?php echo $_POST["fecha-salida"];?>"
-					plan="Plan Continental" 
-					personas="1"
-					dias="<?php echo $dias;?>">
-					<button class="btn btn-dark btn-lg w-100">REALIZAR RESERVA</button>
-				</a>
+				<!-- Abrimos entonces la ventana modal de ingreso ... -->
+				<?php else: ?>
+					
+					<a href="#modalIngreso" data-toggle="modal"
+						class="pagarReserva" 
+						idHabitacion="<?php echo $reservas[$indice]["id_h"]; ?>"
+						imgHabitacion="<?php echo $servidor.$galeria[0]; ?>"
+						infoHabitacion="Habitación <?php echo $reservas[$indice]["tipo"]." ".$reservas[$indice]["estilo"]; ?>"
+						pagoReserva="<?php echo ($precioContinental*$dias);?>"
+						codigoReserva=""
+						fechaIngreso="<?php echo $_POST["fecha-ingreso"];?>"
+						fechaSalida="<?php echo $_POST["fecha-salida"];?>"
+						plan="Plan Continental" 
+						personas="1"
+						dias="<?php echo $dias;?>">
+						<button class="btn btn-dark btn-lg w-100">REALIZAR RESERVA</button>
+					</a>
+
+				<?php endif; ?>
 
 			</div>
 

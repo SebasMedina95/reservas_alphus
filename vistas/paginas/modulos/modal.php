@@ -1,3 +1,71 @@
+<?php
+
+/*=============================================
+CREAR EL OBJETO DE LA API GOOGLE
+=============================================*/
+
+$cliente = new Google_Client();
+$cliente->setAuthConfig('modelos/client_secret_google.json');
+$cliente->setAccessType("offline");
+$cliente->setScopes(['profile','email']);
+
+/*=============================================
+RUTA PARA EL LOGIN DE GOOGLE
+=============================================*/
+
+$rutaGoogle = $cliente->createAuthUrl();
+
+/*=============================================
+RECIBIMOS LA VARIABLE GET DE GOOGLE LLAMADA CODE
+=============================================*/
+if(isset($_GET["code"])){
+
+	$token = $cliente->authenticate($_GET["code"]);
+	$_SESSION['id_token_google'] = $token;
+	$cliente->setAccessToken($token);
+	// $item = $cliente->verifyIdToken();
+	// echo '<pre class="bg-white">'; print_r($item); echo '</pre>';
+
+}
+
+/*=============================================
+RECIBIMOS LOS DATOS CIFRADOS DE GOOGLE EN UN ARRAY
+=============================================*/
+/**Si es verdadero, es decir, traemos la info de acceso ... */
+if($cliente->getAccessToken()){
+
+	$item = $cliente->verifyIdToken();
+
+	$datos = array("numero_documento"=>"null",
+				   "nombre"=>$item["name"],
+				   "email"=>$item["email"],
+				   "celular"=>"null",
+				   "password"=>"null",
+				   "foto"=>$item["picture"],
+				   "modo"=>"google",
+				   "verificacion"=>1,
+				   "email_encriptado"=>"null");
+
+	$respuesta = ControladorUsuarios::ctrRegistroRedesSociales($datos);
+
+	if($respuesta == "ok"){
+
+		echo '<script>
+
+			setTimeout(function(){
+				
+				window.location = "'.$ruta.'perfil";
+
+			},1000);
+
+		</script>';
+
+	}
+
+}
+
+?>
+
 <!--=====================================
 VENTANA MODAL PLANES
 ======================================-->
@@ -76,7 +144,7 @@ VENTANA MODAL CARTA
 VENTANA MODAL INGRESO
 ======================================-->
 
-<div class="modal" id="modalIngreso">
+<div class="modal fade formulario" tabindex="-1" role="dialog" id="modalIngreso">
 
   <div class="modal-dialog">
 
@@ -92,12 +160,32 @@ VENTANA MODAL INGRESO
       	<!--=====================================
 		INGRESO CON REDES SOCIALES
 		======================================-->
-       
-      	<div class="d-flex">
+
+		<div class="container">
+			<div class="row">
+				<div class="col-12 text-center">
+					<!-- https://console.developers.google.com
+						 https://github.com/google/google-api-php-client -->
+					<!-- <a href="<?php echo $rutaGoogle; ?>">
+						<figure class="google" style="cursor: pointer;">
+							<img src="img/ingresaConGoogleV3.jpg" class="img-fluid w-75">
+						</figure>
+					</a> -->
+				</div>
+				<!-- <div class="col-6">
+					<button class="p-2 btn btn-primary text-center text-white">
+						<i class="fab fa-facebook"></i>
+						Ingreso con Facebook
+					</button>
+				</div> -->
+			</div>
+		</div>
+
+      	<!-- <div class="d-flex">
       		
 			<div class="px-2 flex-fill">
 
-				<p class="p-2 bg-primary text-center text-white">
+				<p class="p-2 bg-primary text-center text-white facebook" style="cursor: pointer;">
 					<i class="fab fa-facebook"></i>
 					Ingreso con Facebook
 				</p>
@@ -106,14 +194,14 @@ VENTANA MODAL INGRESO
 
 			<div class="px-2 flex-fill">
 
-				<p class="p-2 bg-danger text-center text-white">
+				<button class="p-2 btn btn-danger text-center text-white">
 					<i class="fab fa-google"></i>
 					Ingreso con Google
-				</p>
+				</button>
 
 			</div>
 
-      	</div>
+      	</div> -->
 
       	<!--=====================================
 		INGRESO DIRECTO
@@ -121,7 +209,9 @@ VENTANA MODAL INGRESO
 
 		<hr class="mt-0">
 
-		<form>
+		<!-- <span class="badge"> O si prefieres, ingresa directamente al sistema: </span> -->
+
+		<form method="POST">
 
 			<div class="input-group mb-3">
 
@@ -135,7 +225,7 @@ VENTANA MODAL INGRESO
 
 			    </div>
 
-			    <input type="email" class="form-control" placeholder="Email">
+			    <input type="email" class="form-control" placeholder="Email" name="ingresoEmail" required>
 
 		  	</div>
 
@@ -151,12 +241,19 @@ VENTANA MODAL INGRESO
 
 			    </div>
 
-			    <input type="password" class="form-control" placeholder="Contraseña">
+			    <input type="password" class="form-control" placeholder="Contraseña" name="ingresoPassword" required>
 
 		  	</div>
 			
 
 			<input type="submit" class="btn btn-dark btn-block" value="Ingresar">
+
+			<?php
+
+				$ingresoUsuario = new ControladorUsuarios();
+				$ingresoUsuario -> ctrIngresoUsuario();
+
+			?>
 
 		</form>
 
@@ -164,16 +261,16 @@ VENTANA MODAL INGRESO
 
 
       <div class="modal-footer">
-        
-		¿No tiene una cuenta registrada? | 
 
-		<strong>
+		<div>
 
-			<a href="#modalRegistro" data-toggle="modal" data-dismiss="modal">
-				Registrarse
+			¿No tiene una cuenta registrada? . . .
+
+			<a class="btn btn-success btn-sm" href="#modalRegistro" data-toggle="modal" data-dismiss="modal">
+				<i class="fas fa-plus"></i> Registrarse
 			</a>
 
-		</strong>
+		</div>
 
       </div>
 
@@ -187,7 +284,7 @@ VENTANA MODAL INGRESO
 VENTANA MODAL REGISTRO
 ======================================-->
 
-<div class="modal" id="modalRegistro">
+<div class="modal fade formulario" tabindex="-1" role="dialog" id="modalRegistro">
 
   <div class="modal-dialog">
 
@@ -204,11 +301,31 @@ VENTANA MODAL REGISTRO
 		INGRESO CON REDES SOCIALES
 		======================================-->
        
-      	<div class="d-flex">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 text-center">
+					<!-- https://console.developers.google.com
+						 https://github.com/google/google-api-php-client -->
+					<!-- <a href="<?php echo $rutaGoogle; ?>">
+						<figure class="google" style="cursor: pointer;">
+							<img src="img/ingresaConGoogleV3.jpg" class="img-fluid w-75">
+						</figure>
+					</a> -->
+				</div>
+				<!-- <div class="col-6">
+					<button class="p-2 btn btn-primary text-center text-white">
+						<i class="fab fa-facebook"></i>
+						Ingreso con Facebook
+					</button>
+				</div> -->
+			</div>
+		</div>
+
+      	<!-- <div class="d-flex">
       		
 			<div class="px-2 flex-fill">
 
-				<p class="p-2 bg-primary text-center text-white">
+				<p class="p-2 bg-primary text-center text-white facebook" style="cursor: pointer;">
 					<i class="fab fa-facebook"></i>
 					Ingreso con Facebook
 				</p>
@@ -217,14 +334,14 @@ VENTANA MODAL REGISTRO
 
 			<div class="px-2 flex-fill">
 
-				<p class="p-2 bg-danger text-center text-white">
+				<p class="p-2 bg-danger text-center text-white" style="cursor: pointer;">
 					<i class="fab fa-google"></i>
 					Ingreso con Google
 				</p>
 
 			</div>
 
-      	</div>
+      	</div> -->
 
       	<!--=====================================
 		REGISTRO DIRECTO
@@ -232,7 +349,24 @@ VENTANA MODAL REGISTRO
 
 		<hr class="mt-0">
 
-		<form>
+		<form method="post">
+
+			<div class="input-group mb-3">
+
+				<div class="input-group-prepend">
+
+					<span class="input-group-text">
+						
+						<i class="far fa-id-card"></i>
+
+					</span>
+
+				</div>
+
+				<input type="text" class="form-control" placeholder="Número de Documento ..." name="registroDocumento" required>
+
+			</div>
+
 
 			<div class="input-group mb-3">
 
@@ -246,7 +380,7 @@ VENTANA MODAL REGISTRO
 
 			    </div>
 
-			    <input type="text" class="form-control" placeholder="Nombre">
+			    <input type="text" class="form-control" placeholder="Nombre Completo ..." name="registroNombre" required>
 
 		  	</div>
 
@@ -263,7 +397,23 @@ VENTANA MODAL REGISTRO
 
 			    </div>
 
-			    <input type="email" class="form-control" placeholder="Email">
+			    <input type="email" class="form-control" placeholder="Correo Electrónico ..." name="registroEmail" required>
+
+		  	</div>
+
+			<div class="input-group mb-3">
+
+				<div class="input-group-prepend">
+
+					<span class="input-group-text">
+					
+						<i class="fas fa-mobile-alt"></i>
+
+					</span>
+
+				</div>
+
+				<input type="text" class="form-control" placeholder="Número Celular ..." name="registroCelular" required>
 
 		  	</div>
 
@@ -279,12 +429,18 @@ VENTANA MODAL REGISTRO
 
 			    </div>
 
-			    <input type="password" class="form-control" placeholder="Contraseña">
+			    <input type="password" class="form-control" placeholder="Contraseña ..." name="registroPassword" required>
 
 		  	</div>
-			
 
 			<input type="submit" class="btn btn-dark btn-block" value="Registrarse">
+
+			<?php 
+			
+				$registroUsuario = new ControladorUsuarios();
+				$registroUsuario -> ctrRegistroUsuario(); /**Ejecutamos de forma inmediata */
+			
+			?>
 
 		</form>
 
@@ -292,13 +448,13 @@ VENTANA MODAL REGISTRO
 
 
       <div class="modal-footer">
-        
-		¿Ya tienes una cuenta registrada? | 
+
+	  	¿Ya tienes una cuenta registrada? . . . 
 
 		<strong>
 
-			<a href="#modalIngreso" data-toggle="modal" data-dismiss="modal">
-				Ingresar
+			<a class="btn btn-warning btn-sm" href="#modalIngreso" data-toggle="modal" data-dismiss="modal">
+				<i class="fas fa-sign-in-alt"></i> Ingresar
 			</a>
 
 		</strong>

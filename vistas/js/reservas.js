@@ -107,6 +107,7 @@ if($(".infoReservas").html() != undefined){
         if(respuesta.length == 0){
 
           $('#calendar').fullCalendar({
+            defaultDate: fechaIngreso,
             header: {
                 left: 'prev',
                 center: 'title',
@@ -251,6 +252,7 @@ if($(".infoReservas").html() != undefined){
 
           /**Validamos y mostramos los cruces de fechas */
           $('#calendar').fullCalendar({
+            defaultDate: fechaIngreso,
             header: {
                 left: 'prev',
                 center: 'title',
