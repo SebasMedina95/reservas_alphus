@@ -429,5 +429,162 @@ Class ControladorUsuarios{
         }
 	}
 
+    /**CAMBIAR IMAGEN DE PERFIL */
+    public function ctrCambiarFotoPerfil(){
+
+        /**Preguntamos primero si nos llega la variable POST */
+        if(isset($_POST["idUsuarioFoto"])){
+            /**Si no llega imagen que guarde la de la Base de Datos */
+            $ruta = "administracion/".$_POST["fotoActual"];
+            /**Si viene una variable POST de archivo llamada cambiarImagen y no viene vacía ... */
+            if(isset($_FILES["cambiarImagen"]["tmp_name"]) && !empty($_FILES["cambiarImagen"]["tmp_name"])){
+
+                list($ancho, $alto) = getimagesize($_FILES["cambiarImagen"]["tmp_name"]);
+
+                $nuevoAncho = 500;
+				$nuevoAlto = 500;
+
+				/*=============================================
+				CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL USUARIO
+				=============================================*/
+
+				$directorio = "administracion/vistas/img/usuarios/".$_POST["idUsuarioFoto"];
+
+				/*=============================================
+				PRIMERO PREGUNTAMOS SI EXISTE OTRA IMAGEN EN LA BD
+				=============================================*/
+                /**Si existe otro archivo en la BD lo eliminamos */
+                // if($ruta != ""){
+					
+				// 	unlink($ruta);
+
+				// }else{
+                //     /**Todavía no existía foto, entonces creamos el directorio */
+				// 	if(!file_exists($directorio)){	
+                //         /**Creamos el directorio y asignamos los permisos*/
+				// 		mkdir($directorio, 0755);
+
+				// 	}
+
+				// }
+
+
+                if(!file_exists($directorio)){	
+                    /**Creamos el directorio y asignamos los permisos*/
+                    mkdir($directorio, 0755);
+
+                }else{
+                    /**Si existe otro archivo en la BD lo eliminamos */
+                    if($ruta != ""){
+                        
+                        unlink($ruta);
+
+                    }
+                }
+
+                /*=======================================================================
+				DE ACUERDO AL TIPO DE IMAGEN APLICAMOS LAS FUNCIONES POR DEFECTO DE PHP
+				=========================================================================*/
+
+                if($_FILES["cambiarImagen"]["type"] == "image/jpeg"){
+                    /**Nombre que le darémos */
+					$aleatorio1 = mt_rand(100,999);
+                    $aleatorio2 = mt_rand(100,999);
+                    $aleatorio = $aleatorio1 + $aleatorio2;
+
+					$ruta = $directorio."/".$aleatorio.".jpg";
+                    /**Creamos una imagen de acuerdo al archivo temporal */
+					$origen = imagecreatefromjpeg($_FILES["cambiarImagen"]["tmp_name"]);
+                    /**Creamos la imagen de acuerdo al nuevo ancho y al nuevo largo */
+					$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);	
+                    
+                    /**Las medidas que deberían quedar, de cuanto viene la imagen original,
+                     * los 0 es para recordar las imagenes en las coordenadas arriba, abajo, izquierda, derecha
+                     * para que inicie un nuevo ancho, un nuevo alto y tome el ancho y alto anterior */
+					imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+					imagejpeg($destino, $ruta);	
+
+				}else if($_FILES["cambiarImagen"]["type"] == "image/png"){
+
+					/**Nombre que le darémos */
+					$aleatorio1 = mt_rand(100,999);
+                    $aleatorio2 = mt_rand(100,999);
+                    $aleatorio = $aleatorio1 + $aleatorio2;
+
+					$ruta = $directorio."/".$aleatorio.".png";
+                    /**Creamos una imagen de acuerdo al archivo temporal */
+					$origen = imagecreatefrompng($_FILES["cambiarImagen"]["tmp_name"]);	
+                    /**Creamos la imagen de acuerdo al nuevo ancho y al nuevo largo */					
+					$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+
+					imagealphablending($destino, FALSE);		
+					imagesavealpha($destino, TRUE);
+					imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+					imagepng($destino, $ruta);
+
+				}else{
+
+					echo'<script>
+
+						swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Solo se permiten imágenes JPG y PNG!",
+							  
+						}).then(function(result){
+
+                            if(result.value){   
+                                history.back();
+                            } 
+
+						});
+
+					</script>';
+
+				}
+                /**Por que si no nos quedaría algo del tipo administracion/vistas/img/usuarios/###.jpg
+                 * Entonces debemos quitar los primeros 15 caracteres que corresponde a administracion/ */
+                $ruta = substr($ruta, 15);
+
+            }
+
+            $tabla = "usuarios";
+			$id = $_POST["idUsuarioFoto"];
+			$item = "foto";
+			$valor = $ruta;
+
+            $actualizarFotoPerfil = ModeloUsuarios::mdlActualizarUsuario($tabla, $id, $item, $valor);
+
+			if($actualizarFotoPerfil == "ok"){
+
+				echo '<script>
+
+                setTimeout(function() {
+					swal.fire({
+                        position: "top-center",
+                        icon: "success",
+                        title: "¡La foto de perfil ha sido actualizada!",
+                        showConfirmButton: false
+					  
+					});
+
+                }, 2500);
+
+				</script>';
+
+			}
+
+            /** NOS VAMOS PARA LA PÁGINA DE PERFIL */
+            $rutaS = ControladorRuta::ctrRuta();
+            echo '<script>
+        
+                window.location = "'.$rutaS.'perfil";				
+
+            </script>';
+
+        }
+
+    }
+
 
 } /**Clase general */

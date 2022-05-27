@@ -5,7 +5,7 @@ $.ajax({
         /**Si tenemos problemas con el JSON, descomentamos para ver el JSON que retorna,
          * copiamos y pegamos en un archivo de extensión JSON o JS para que nos muestre los
          * posibles errores */
-        console.log(respuesta);
+        // console.log(respuesta);
     }
 
 });
