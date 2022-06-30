@@ -257,7 +257,7 @@ INFO PERFIL
 				PERFIL
 				======================================-->
 
-				<div class="descripcionPerfil">
+				<div class="descripcionPerfil text-center">
 					
 					<figure class="text-center imgPerfil">
 						<!-- Si no tenemos fotos, entonces traemos la por defecto del server -->
@@ -277,6 +277,14 @@ INFO PERFIL
 						<?php endif; ?>
 
 					</figure>
+
+					<div class="text-center btn-group" role="group" aria-label="Botonera de Funciones">
+						<button title="Actualizar Foto" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#cambiarFotoPerfil"><i class="far fa-image"></i></button>
+						<button title="Actualizar Contraseña" type="button" class="btn btn-secondary"><i class="fas fa-key"></i></button>
+						<button title="Generar Reporte" type="button" class="btn btn-secondary"><i class="fas fa-book"></i></button>
+					</div>
+
+					<hr>
 
 					<div id="accordion">
 
@@ -370,73 +378,9 @@ INFO PERFIL
 											</li>
 										<?php endif; ?>
 
-										<li class="list-group-item small">
+										<!-- <li class="list-group-item small">
 											<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#cambiarFotoPerfil">Cambiar Imagen</button>
-										</li>
-
-										<!-- MODAL PARA CAMBIAR LA FOTO PERFIL -->
-										<div class="modal fade formulario" tabindex="-1" role="dialog" id="cambiarFotoPerfil">
-
-											<div class="modal-dialog">
-
-												<div class="modal-content">
-													<!-- Para poder manejar el tema de las imagenes necesitamos enctype="multipart/form-data" por que
-													en últimas enviaremos es archivos -->
-													<form method="post" enctype="multipart/form-data">	
-
-														<div class="modal-header bg-dark">
-
-															<h4 class="modal-title text-white">Cambiar foto de perfil</h4>
-
-															<button type="button" class="close" data-dismiss="modal">&times;</button>
-
-														</div>
-
-														<div class="modal-body">
-															<!-- Oculto para tener el id del usuario para la actualización -->
-															<input type="hidden" name="idUsuarioFoto" value="<?php echo $usuarioLogeado["id_u"]; ?>">
-
-															<div class="form-group">
-
-																<input type="file" class="form-control-file border" name="cambiarImagen" required>
-
-																<!-- Para evitar ataques en el sistema de mandar imagene vacias -->
-																<input type="hidden" name="fotoActual" value="<?php echo $usuarioLogeado["foto"]; ?>">
-
-															</div>	
-
-														</div>
-
-														<div class="modal-footer d-flex justify-content-between">  
-
-														<div>
-
-															<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-
-														</div>
-
-														<div>
-
-															<button type="submit" class="btn btn-primary"><i class="far fa-paper-plane"></i> Enviar Imagen</button>
-
-														</div>
-
-														</div>
-
-														<?php
-
-															$cambiarImagen = new ControladorUsuarios();
-															$cambiarImagen -> ctrCambiarFotoPerfil();
-
-														?>
-
-													</form>
-
-												</div>
-
-											</div>
-
-										</div>
+										</li> -->
 
 									</ul>
 

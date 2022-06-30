@@ -17,36 +17,66 @@ Class TablaReservas{
         $reservas = ControladorReservas::ctrMostrarReservasUsuario($usuario);
         $servidor = ControladorRuta::ctrServidor();
 
-        $datosJSON = '{
-            "data": [';
+        if($reservas){
 
-            for($i = 0; $i < count($reservas); $i ++){
+            $datosJSON = '{
+                "data": [';
+    
+                for($i = 0; $i < count($reservas); $i ++){
+    
+                    $botones = "<button title='Actualizar Testimonial de la Reserva' type='button' class='ml-1 btn btn-sm btn-warning text-white'><i class='fas fa-edit'></i></button><button title='Ver Testimonial de la Reserva' type='button' class='ml-1 btn btn-sm btn-primary text-white'><i class='fas fa-eye'></i></button><button title='Imprimir Comprobante de la Reserva' type='button' class='ml-1 btn btn-sm btn-success text-white'><i class='far fa-file-alt'></i></button>";
+    
+                    $valorReserva = "$ ".number_format($reservas[$i]["pago_reserva"], 0, ',', '.');
+    
+                    $datosJSON .= '[
+                            "'.($i+1).'",
+                            "'.$botones.'",
+                            "'.$reservas[$i]["codigo_reserva"].'",
+                            "'.$reservas[$i]["fecha_ingreso"].'",
+                            "'.$reservas[$i]["fecha_salida"].'",
+                            "'.$valorReserva.'",
+                            "'.$reservas[$i]["descripcion_reserva"].'"
+                    ],';
+    
+                }
+    
+                /**Al principio no nos toque nada pero el último caracter quítelo
+                * Esto para quitar la , que queda al final y que daña la estructura del JSON.*/
+                $datosJSON = substr($datosJSON , 0 , -1);
+    
+                $datosJSON .= ']
+            }';
 
-                $botones = "<button title='Actualizar Testimonial de la Reserva' type='button' class='ml-1 btn btn-sm btn-warning text-white'><i class='fas fa-edit'></i></button><button title='Ver Testimonial de la Reserva' type='button' class='ml-1 btn btn-sm btn-primary text-white'><i class='fas fa-eye'></i></button><button title='Imprimir Comprobante de la Reserva' type='button' class='ml-1 btn btn-sm btn-success text-white'><i class='far fa-file-alt'></i></button>";
+        }else{
 
-                $valorReserva = "$ ".number_format($reservas[$i]["pago_reserva"], 0, ',', '.');
+            $datosJSON = '{
+                "data": [';
+    
+                    $botones = "<span class='badge badge-info'>Sin Reservas aún</span>";
+    
+                    $valorReserva = "$ -";
+    
+                    $datosJSON .= '[
+                            "'.(1).'",
+                            "'.$botones.'",
+                            "'.$botones.'",
+                            "'.$botones.'",
+                            "'.$botones.'",
+                            "'.$botones.'",
+                            "'.$botones.'"
+                    ],';
+    
+                /**Al principio no nos toque nada pero el último caracter quítelo
+                * Esto para quitar la , que queda al final y que daña la estructura del JSON.*/
+                $datosJSON = substr($datosJSON , 0 , -1);
+    
+                $datosJSON .= ']
+            }';
 
-                $datosJSON .= '[
-                        "'.($i+1).'",
-                        "'.$botones.'",
-                        "'.$reservas[$i]["codigo_reserva"].'",
-                        "'.$reservas[$i]["fecha_ingreso"].'",
-                        "'.$reservas[$i]["fecha_salida"].'",
-                        "'.$valorReserva.'",
-                        "'.$reservas[$i]["descripcion_reserva"].'"
-                ],';
+        }
 
-            }
-
-            /**Al principio no nos toque nada pero el último caracter quítelo
-            * Esto para quitar la , que queda al final y que daña la estructura del JSON.*/
-            $datosJSON = substr($datosJSON , 0 , -1);
-
-            $datosJSON .= ']
-        }';
-
-        
         echo $datosJSON;
+        
 
     }
 

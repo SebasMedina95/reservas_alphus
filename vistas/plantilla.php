@@ -144,6 +144,8 @@ $servidor = ControladorRuta::ctrServidor();
 
 include "paginas/modulos/header.php";
 
+
+
 /**Por la naturaleza del Front así como encotrarsen en posición Fixed y que no se cruce con las demás páginas, ubicamos estos modales
  * por encima de las demás páginas para evitar errores */
 include "paginas/modulos/modal.php";
