@@ -279,8 +279,8 @@ INFO PERFIL
 					</figure>
 
 					<div class="text-center btn-group" role="group" aria-label="Botonera de Funciones">
-						<button title="Actualizar Foto" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#cambiarFotoPerfil"><i class="far fa-image"></i></button>
-						<button title="Actualizar Contraseña" type="button" class="btn btn-secondary"><i class="fas fa-key"></i></button>
+						<button title="Actualizar Foto" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#cambiarFotoPerfil"><i class="fas fa-camera-retro"></i></button>
+						<button title="Actualizar Contraseña" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#cambiarPassword"><i class="fas fa-key"></i></button>
 						<button title="Generar Reporte" type="button" class="btn btn-secondary"><i class="fas fa-book"></i></button>
 					</div>
 

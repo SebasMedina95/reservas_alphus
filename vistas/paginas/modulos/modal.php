@@ -158,7 +158,7 @@ VENTANA MODAL INGRESO
 
     <div class="modal-content">
 
-      <div class="modal-header bg-info text-white">
+      <div class="modal-header bg-dark text-white">
         <h4 class="modal-title">Ingresar</h4>
         <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
       </div>
@@ -252,8 +252,15 @@ VENTANA MODAL INGRESO
 			    <input type="password" class="form-control" placeholder="Contraseña" name="ingresoPassword" required>
 
 		  	</div>
-			
 
+			  <div class="text-center pb-3">
+		
+				<a href="#modalRecuperarPassword" data-toggle="modal" data-dismiss="modal">
+					<i class="far fa-frown-open"></i> ¿Olvidó su contraseña? <i class="far fa-frown-open"></i>
+				</a>
+
+			</div>
+					
 			<input type="submit" class="btn btn-dark btn-block" value="Ingresar">
 
 			<?php
@@ -298,7 +305,7 @@ VENTANA MODAL REGISTRO
 
     <div class="modal-content">
 
-      <div class="modal-header bg-info text-white">
+      <div class="modal-header bg-dark text-white">
         <h4 class="modal-title">Registarse</h4>
         <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
       </div>
@@ -475,7 +482,9 @@ VENTANA MODAL REGISTRO
 
 </div>
 
+<!-- ********************************* -->
 <!-- MODAL PARA CAMBIAR LA FOTO PERFIL -->
+<!-- ********************************* -->
 <div class="modal fade formulario" tabindex="-1" role="dialog" id="cambiarFotoPerfil">
 
 	<div class="modal-dialog">
@@ -536,5 +545,158 @@ VENTANA MODAL REGISTRO
 		</div>
 
 	</div>
+
+</div>
+
+<!-- ******************************************************* -->
+<!-- MODAL PARA CAMBIAR LA CONTRASEÑA CON EL INGRESO DIRECTO -->
+<!-- ******************************************************* -->
+
+<div class="modal fade formulario" tabindex="-1" role="dialog" id="cambiarPassword">
+	
+	<div class="modal-dialog">
+
+		<div class="modal-content">
+
+			<form method="post">
+
+				<div class="modal-header bg-dark">
+
+					<h4 class="modal-title text-white">Cambiar Contraseña</h4>
+
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+
+				</div>
+
+				<div class="modal-body">
+					
+					<input type="hidden" name="idUsuarioPassword" value="<?php echo $usuarioLogeado["id_u"]; ?>">
+
+					<div class="input-group mb-3">
+
+						<div class="input-group-prepend">
+
+							<span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>
+
+						</div>
+
+						<input type="password" class="form-control" placeholder="Ingrese la contraseña actual ..." name="actualPassword" autocomplete="off" required>
+					
+					</div>
+
+					<div class="input-group mb-3">
+
+						<div class="input-group-prepend">
+
+							<span class="input-group-text" id="basic-addon1"><i class="fas fa-unlock"></i></span>
+						
+						</div>
+						
+						<input type="password" class="form-control" placeholder="Ingrese nueva contraseña ..." name="nuevoPassword" autocomplete="off" required>
+					
+					</div>
+
+					<div class="input-group mb-3">
+
+						<div class="input-group-prepend">
+
+							<span class="input-group-text" id="basic-addon1"><i class="fas fa-check"></i></span>
+
+						</div>
+
+						<input type="password" class="form-control" placeholder="Confirmar nueva contraseña ..." name="confirmarPassword" autocomplete="off" required>
+					
+					</div>
+
+				</div>
+
+				<div class="modal-footer d-flex justify-content-between"> 
+
+					<div>
+
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+
+					</div>
+
+					<div>
+
+						<button type="submit" class="btn btn-primary"><i class="far fa-paper-plane"></i> Enviar Contraseña</button>
+
+					</div>
+
+				</div>
+
+				<?php
+
+					$cambiarPassword = new ControladorUsuarios();
+					$cambiarPassword -> ctrCambiarPassword();
+
+				?>
+
+			</form>
+
+		</div>
+
+	</div>
+
+</div>
+
+<!--=====================================
+VENTANA MODAL RECUPERAR CONTRASEÑA
+======================================-->
+
+<div class="modal fade formulario" tabindex="-1" role="dialog" id="modalRecuperarPassword">
+	
+	<div class="modal-dialog">
+
+	    <div class="modal-content">
+
+	    	<div class="modal-header bg-dark">
+
+		        <h4 class="modal-title text-white">Recuperar contraseña</h4>
+
+		        <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+
+		    </div>
+
+			 <div class="modal-body">
+			 	
+				<form method="post">
+
+					<p class="text-muted">Escriba su correo electrónico con el que estás registrado y allí le enviaremos una nueva contraseña:</p>
+
+					<div class="input-group mb-3">
+						
+						<div class="input-group-prepend">
+
+					      <span class="input-group-text">
+					      	
+					      	<i class="far fa-envelope"></i>
+
+					      </span>
+
+					    </div>
+
+					    <input type="email" class="form-control" placeholder="Email" name="emailRecuperarPassword" required>
+
+					</div>
+
+					<input type="submit" class="btn btn-dark btn-block" value="Enviar">
+
+					<?php
+
+						$recuperarPassword = new ControladorUsuarios();
+						$recuperarPassword -> ctrRecuperarPassword();
+
+					?>
+
+				</form>
+
+			 </div>
+
+	    </div>
+
+    </div>
+
 
 </div>

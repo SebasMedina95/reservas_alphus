@@ -586,5 +586,330 @@ Class ControladorUsuarios{
 
     }
 
+    /*=============================================
+	CAMBIAR PASSWORD
+	=============================================*/
+
+	public function ctrCambiarPassword(){
+
+		if(isset($_POST["actualPassword"]) || isset($_POST["nuevoPassword"])){
+
+			if(preg_match('/^[a-zA-Z0-9]+$/', $_POST["actualPassword"]) && preg_match('/^[a-zA-Z0-9]+$/', $_POST["nuevoPassword"]) && preg_match('/^[a-zA-Z0-9]+$/', $_POST["confirmarPassword"])){
+
+				/**Primero debemos validar que la contraseña original coincida por seguridad */
+                $passActual = crypt($_POST["actualPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+                $passNueva  = crypt($_POST["nuevoPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+                $passConfir = crypt($_POST["confirmarPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+
+                $tabla = "usuarios";
+                $item  = "id_u";
+                $valor = $_POST["idUsuarioPassword"];
+                $respuesta = ModeloUsuarios::mdlMostrarUsuario($tabla, $item, $valor);
+
+                // echo '<pre class="bg-white">' ; print_r($respuesta) ; echo '</pre>';
+
+                if($respuesta["password"] != $passActual){
+
+                    echo'<script>
+
+						swal.fire({
+                            icon: "error",
+                            title: "Oops... ¡CORREGIR!",
+                            text: "¡La contraseña actual no coincide con la proporcionada para validar, por favor verifique!",
+							  
+						}).then(function(result){
+
+                            if(result.value){   
+                                history.back();
+                            } 
+
+						});
+
+					</script>';
+
+                }else{
+                    
+                    /**Primero validamos que la nueva contraseña y la confirmación coincidan */
+                    if($passNueva != $passConfir){
+                        
+                        echo'<script>
+
+                            swal.fire({
+                                icon: "error",
+                                title: "Oops... ¡CORREGIR!",
+                                text: "¡La contraseña nueva y la confirmación no coinciden, por favor verifique!",
+                                
+                            }).then(function(result){
+
+                                if(result.value){   
+                                    history.back();
+                                } 
+
+                            });
+
+                        </script>';
+
+                    }else{
+
+                        $tabla = "usuarios";
+                        $id = $_POST["idUsuarioPassword"];
+                        $item = "password";
+                        $valor = $passNueva;
+        
+                        $actualizarPassword = ModeloUsuarios::mdlActualizarUsuario($tabla, $id, $item, $valor);
+        
+                        if($actualizarPassword == "ok"){
+        
+                            echo '<script>
+        
+                                swal.fire({
+                                    position: "top-center",
+                                    icon: "success",
+                                    title: "¡La contraseña se ha actualizado correctamente!",
+                                    showConfirmButton: false
+                                
+                                });
+        
+                            </script>';
+        
+                        }
+
+                    }
+
+
+                }
+                
+			}else{
+
+				echo'<script>
+
+                    swal.fire({
+                        icon: "error",
+                        title: "Oops... ¡CORREGIR!",
+                        text: "¡No se permite el ingreso de caracteres especiales!",
+                        
+                    }).then(function(result){
+
+                        if(result.value){   
+                            history.back();
+                        } 
+
+                    });
+
+				</script>';
+
+		 	}
+
+		}
+
+	}
+
+    /*=============================================
+	RECUPERAR CONTRASEÑA
+	=============================================*/
+
+	public function ctrRecuperarPassword(){
+	
+		if(isset($_POST["emailRecuperarPassword"])){
+
+			if(preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $_POST["emailRecuperarPassword"])){
+
+				/*=============================================
+				GENERAR CONTRASEÑA ALEATORIA
+				=============================================*/
+
+				function generarPassword($longitud){
+
+					$password = "";
+					$patron = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+					$max = strlen($patron)-1; /** La función strlen saca la longitud del String, le quito 1 por que mas adelante mt_rand inicia en 0*/
+
+					for($i = 0; $i < $longitud; $i++){
+
+                        /**El password lo hacemos igual a lo que trae patrón, aleatoriamente hasta el máximo */ 
+						$password .= $patron[mt_rand(0,$max)]; 
+
+					}
+
+					return $password; /**Retornamos el password */
+
+				}
+
+				$nuevaPassword = generarPassword(15); /**Almaceno la contraseña con 15 de longitud */
+
+				$encriptar = crypt($nuevaPassword, '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+
+				$tabla = "usuarios";
+				$item = "email";
+				$valor = $_POST["emailRecuperarPassword"];
+
+				$traerUsuario = ModeloUsuarios::mdlMostrarUsuario($tabla, $item, $valor);
+
+                /**Si existe el correo electrónico ... */
+				if($traerUsuario){
+
+					$id = $traerUsuario["id_u"];
+					$item = "password";
+					$valor = $encriptar;
+
+					$actualizarPassword = ModeloUsuarios::mdlActualizarUsuario($tabla, $id, $item, $valor);
+
+					if($actualizarPassword  == "ok"){
+
+						/*=============================================
+						VERIFICACIÓN CORREO ELECTRÓNICO
+						=============================================*/
+
+						date_default_timezone_set("America/Bogota");
+
+						$ruta = ControladorRuta::ctrRuta();
+
+						$mail = new PHPMailer;
+
+						$mail->CharSet = 'UTF-8';
+
+						$mail->isMail();
+
+						$mail->setFrom('servicioreservas@hotelalphus.com', 'Hotel Alphus');
+
+						$mail->addReplyTo('servicioreservas@hotelalphus.com', 'Hotel Alphus');
+
+						$mail->Subject = "Por favor verifique su dirección de correo electrónico";
+
+						$mail->addAddress($_POST["emailRecuperarPassword"]);
+
+						$mail->msgHTML('<div style="width:100%; background:#eee; position:relative; font-family:sans-serif; padding-bottom:40px">
+	
+							<center>
+								
+                                <img style="padding:20px; width:100%" src="https://scontent.feoh1-1.fna.fbcdn.net/v/t39.30808-6/278097240_4487553271345710_8428121617014453228_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=0debeb&_nc_eui2=AeGRJKxtey_5eUC3-P-ogLJ2ScHC1dzezpxJwcLV3N7OnIY_NUYikGJjen08-Hek1OBZGVZEzfPk9juvA-bkwozS&_nc_ohc=27upOpKagmYAX-LQZ0y&_nc_oc=AQk-utLmni1XMVDHbU-sP_2aO5JCGYkxP42pb_J9wTPydPxud9N_7A1HPCcSNWXM5QI&_nc_ht=scontent.feoh1-1.fna&oh=00_AT-7z7gy725Fl62X4TNroBwX19_kuDoIP7gPmBto2Yis1w&oe=6254DC9D">
+
+							</center>
+
+							<div style="position:relative; margin:auto; width:600px; background:white; padding:20px">
+							
+								<center>
+								
+								<img style="padding:20px; width:30%" src="https://espaimaternalactiu.com/wp-content/uploads/2017/04/icono-mail.png">
+
+								<h3 style="font-weight:100; color:#999">SOLICITUD DE NUEVA CONTRASEÑA</h3>
+
+								<hr style="border:1px solid #ccc; width:80%">
+
+								<h4 style="font-weight:100; color:#999; padding:0 20px"><strong>Su nueva contraseña: </strong>'.$nuevaPassword.'</h4>
+
+								<a href="'.$ruta.'" target="_blank" style="text-decoration:none">
+
+								<div style="line-height:30px; background:#0aa; width:60%; padding:20px; color:white">			
+									Haz click aquí
+								</div>
+
+								</a>
+
+								<h4 style="font-weight:100; color:#999; padding:0 20px">Ingrese nuevamente al sitio con esta contraseña y recuerde cambiarla en el panel de perfil de usuario</h4>
+
+								<br>
+
+								<hr style="border:1px solid #ccc; width:80%">
+
+								<h5 style="font-weight:100; color:#999">Si no se inscribió en esta cuenta, puede ignorar este correo electrónico y la cuenta se eliminará.</h5>
+
+								</center>
+
+							</div>
+
+						</div>');
+
+						$envio = $mail->Send();
+
+						if(!$envio){
+
+							echo'<script>
+
+                                swal.fire({
+                                    icon: "error",
+                                    title: "Oops... ERROR!",
+                                    text: "¡Ha ocurrido un problema enviando verificación de correo electrónico a '.$_POST["emailRecuperarPassword"].$mail->ErrorInfo.', por favor inténtelo nuevamente!",
+                                    
+                                }).then(function(result){
+        
+                                    if(result.value){   
+                                        history.back();
+                                    } 
+        
+                                });
+
+							</script>';
+
+						}else{
+
+
+							echo'<script>
+
+                                swal.fire({
+                                    position: "top-center",
+                                    icon: "success",
+                                    title: "¡SU SOLICITUD HA SIDO RECIBIDA! - Por favor revise la bandeja de entrada o la carpeta de SPAM de su correo electrónico '.$_POST["emailRecuperarPassword"].' para efectuar correctamente su cambio de contraseña",
+                                    showConfirmButton: false
+                                
+                                });
+
+							</script>';
+
+						}	
+
+
+					}
+
+
+				}else{
+
+					echo '<script>
+
+                        swal.fire({
+                            icon: "error",
+                            title: "Oops... ERROR!",
+                            text: "¡El Email No Existe en nuestra Base de Datos, puede registrarse con este correo si gusta!",
+                            
+                        }).then(function(result){
+
+                            if(result.value){   
+                                history.back();
+                            } 
+
+                        });
+
+					</script>';
+
+				}
+
+			}else{
+
+
+				echo'<script>
+
+                    swal.fire({
+                        icon: "error",
+                        title: "Oops... ¡CORREGIR!",
+                        text: "¡No se permite el ingreso de caracteres especiales!",
+                        
+                    }).then(function(result){
+
+                        if(result.value){   
+                            history.back();
+                        } 
+
+                    });
+
+				</script>';
+
+			}
+
+		}
+
+
+	}
+
 
 } /**Clase general */
