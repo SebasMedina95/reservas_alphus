@@ -53,7 +53,7 @@ Class ControladorUsuarios{
             }
 
             /**Validación del email */
-            if(!preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/' , $_POST["registroEmail"])){
+            if(!preg_match('/^[^0-9-][a-zA-Z0-9_-]+([.-][a-zA-Z0-9_-]+)*[@-][a-zA-Z0-9_-]+([.-][a-zA-Z0-9_-]+)*[.-][a-zA-Z-]{2,4}$/' , $_POST["registroEmail"])){
 
                 echo "<script>
 
@@ -255,7 +255,7 @@ Class ControladorUsuarios{
         if(isset($_POST["ingresoEmail"])){
 
             /**Validamos por el Pregmach */
-            if(preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/' , $_POST["ingresoEmail"]) && preg_match('/^[a-zA-Z0-9]+$/' , $_POST["ingresoPassword"])){
+            if(preg_match('/^[^0-9-][a-zA-Z0-9_-]+([.-][a-zA-Z0-9_-]+)*[@-][a-zA-Z0-9_-]+([.-][a-zA-Z0-9_-]+)*[.-][a-zA-Z-]{2,4}$/' , $_POST["ingresoEmail"]) && preg_match('/^[a-zA-Z0-9]+$/' , $_POST["ingresoPassword"])){
 
                 /**No podemos desencriptar la Pass de la base de datos, PERO, podríamos encriptar la que nos llega y comparar */
                 $encriptarPassword = crypt($_POST["ingresoPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
@@ -712,7 +712,7 @@ Class ControladorUsuarios{
 	
 		if(isset($_POST["emailRecuperarPassword"])){
 
-			if(preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $_POST["emailRecuperarPassword"])){
+			if(preg_match('/^[^0-9-][a-zA-Z0-9_-]+([.-][a-zA-Z0-9_-]+)*[@-][a-zA-Z0-9_-]+([.-][a-zA-Z0-9_-]+)*[.-][a-zA-Z-]{2,4}$/', $_POST["emailRecuperarPassword"])){
 
 				/*=============================================
 				GENERAR CONTRASEÑA ALEATORIA

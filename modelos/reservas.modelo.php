@@ -20,6 +20,22 @@ class ModeloReservas{
 
     }
 
+    /**MOSTRAMOS TODAS LAS HABITACIONES(Tabla1) - RESERVAS(Tabla2) - CATEGORIAS(Tabla3) - ESTE SE USA PARA MOSTRAR UNA RESERVA EN ESPECÍFICA*/
+    static public function mdlMostrarReservasId($tabla1, $tabla2, $tabla3, $valor){
+
+        /**Traigo la información común entre habitaciones y categorías con base al id y lo uno con un tercer que sería la reserva. */
+        $stmt = Conexion::conectar()->prepare("SELECT $tabla1.* , $tabla2.* , $tabla3.* FROM $tabla1 INNER JOIN $tabla2 ON $tabla1.id_h = $tabla2.id_habitacion INNER JOIN $tabla3 ON $tabla1.tipo_h = $tabla3.id WHERE id_reserva = :id_reserva AND $tabla2.estado_pago = '1'");
+        /**Enlazamos el parámetro */
+        $stmt -> bindParam(":id_reserva", $valor, PDO::PARAM_STR);
+
+        $stmt -> execute();
+        return $stmt->fetchAll();
+
+        /**Cerramos sentencia y conexión */
+        $stmt = null;
+
+    }
+
     /**MOSTRAMOS TODAS LAS HABITACIONES(Tabla1) - RESERVAS(Tabla2) - CATEGORIAS(Tabla3) 
      * ESTA ES IDENTICA A LA ANTERIOR, PERO LUEGO LA DINAMIZAMOS, EL CAMBIO ES EL ESTADO DE PAGO.
     */
@@ -59,7 +75,9 @@ class ModeloReservas{
      * DE MANERA INVOLUNTARIA. **/
     static public function mdlInsertarPreReserva($tabla1, $valIdHabitaci, $usuario, $valValorPagar, $valCodReserva, $valDescriRese, $valFechaIngre, $valFechaSalid, $estado, $valDiasEstadi){
         
-        $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla1(id_habitacion, id_usuario, pago_reserva, codigo_reserva, descripcion_reserva, fecha_ingreso, fecha_salida, estado_pago, dias) VALUES (:id_habitacion, :id_usuario, :pago_reserva, :codigo_reserva, :descripcion_reserva, :fecha_ingreso, :fecha_salida, :estado_pago, :dias)");
+        $connection = Conexion::conectar();
+        
+        $stmt = $connection->prepare("INSERT INTO $tabla1(id_habitacion, id_usuario, pago_reserva, codigo_reserva, descripcion_reserva, fecha_ingreso, fecha_salida, estado_pago, dias) VALUES (:id_habitacion, :id_usuario, :pago_reserva, :codigo_reserva, :descripcion_reserva, :fecha_ingreso, :fecha_salida, :estado_pago, :dias)");
 
 		$stmt->bindParam(":id_habitacion", $valIdHabitaci, PDO::PARAM_STR);
 		$stmt->bindParam(":id_usuario", $usuario, PDO::PARAM_STR);
@@ -73,7 +91,8 @@ class ModeloReservas{
 
 		if($stmt->execute()){
 
-			return "ok";
+            $ultimoId = $connection->lastInsertId(); /**Devuelvame el último id insertado ... */
+			return $ultimoId;
 
 		}else{
 
@@ -83,6 +102,31 @@ class ModeloReservas{
 
 		$stmt = null;
     
+    }
+
+    /**CREAMOS LA TESTIMONIAL QUE ESTARÁ VINCULADA A LA RESERVA */
+    static public function mdlCrearTestimonio($tablaTestimonios , $datos){
+
+        $stmt = Conexion::conectar()->prepare("INSERT INTO $tablaTestimonios(id_reserva_t, id_usuario_t, id_habitacion_t, testimonio, aprobado) VALUES (:id_reserva_t, :id_usuario_t, :id_habitacion_t, :testimonio, :aprobado)");
+
+		$stmt->bindParam(":id_reserva_t", $datos["id_reserva_t"], PDO::PARAM_STR);
+		$stmt->bindParam(":id_usuario_t", $datos["id_usuario_t"], PDO::PARAM_STR);
+		$stmt->bindParam(":id_habitacion_t", $datos["id_habitacion_t"], PDO::PARAM_STR);
+		$stmt->bindParam(":testimonio", $datos["testimonio"], PDO::PARAM_STR);
+		$stmt->bindParam(":aprobado", $datos["aprobado"], PDO::PARAM_STR);
+
+		if($stmt->execute()){
+
+			return "ok"; 
+
+		}else{
+
+			return "error";
+		
+		}
+
+		$stmt = null;
+
     }
 
     /**MOSTRAMOS LAS RESERVAS ASOCIADA A LA ÚLTIMA INTERACCIÓN CON EL USUARIO EN UNA RESERVA */
@@ -159,13 +203,15 @@ class ModeloReservas{
     }
 
     /**Eliminamos la pre reserva si dado el caso ya se venció la Cookie que rige el proceso de la reserva en el perfil */
-    static public function mdlEliminarPreReserva($tabla1, $reserva){
+    static public function mdlEliminarPreReserva($tabla1, $tabla2, $reserva){
 
-        $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla1 WHERE $tabla1.codigo_reserva = :reserva");
+        $stmt1 = Conexion::conectar()->prepare("DELETE FROM $tabla1 WHERE $tabla1.codigo_reserva = :reserva1");
+        $stmt1->bindParam(":reserva1", $reserva, PDO::PARAM_STR);
 
-        $stmt->bindParam(":reserva", $reserva, PDO::PARAM_STR);
+        $stmt2 = Conexion::conectar()->prepare("DELETE FROM $tabla2 WHERE $tabla2.id_reserva_t = :reserva2");
+        $stmt2->bindParam(":reserva2", $reserva, PDO::PARAM_STR);
 
-        if($stmt->execute()){
+        if($stmt1->execute()){
 
 			return "ok";
 
@@ -184,7 +230,7 @@ class ModeloReservas{
     static public function mdlMostrarReservasUsuario($tabla1, $tabla2, $tabla3, $usuario){
 
         /**Traigo la información común entre habitaciones y categorías con base al id y lo uno con un tercer que sería la reserva. */
-        $stmt = Conexion::conectar()->prepare("SELECT $tabla1.* , $tabla2.* , $tabla3.* FROM $tabla1 INNER JOIN $tabla2 ON $tabla1.id_h = $tabla2.id_habitacion INNER JOIN $tabla3 ON $tabla1.tipo_h = $tabla3.id WHERE $tabla2.estado_pago = '1' AND $tabla2.id_usuario = :usuario ");
+        $stmt = Conexion::conectar()->prepare("SELECT $tabla1.* , $tabla2.* , $tabla3.* FROM $tabla1 INNER JOIN $tabla2 ON $tabla1.id_h = $tabla2.id_habitacion INNER JOIN $tabla3 ON $tabla1.tipo_h = $tabla3.id WHERE $tabla2.estado_pago = '1' AND $tabla2.id_usuario = :usuario ORDER BY $tabla2.id_reserva DESC");
         /**Enlazamos el parámetro */
         $stmt -> bindParam(":usuario", $usuario, PDO::PARAM_INT);
 
@@ -195,6 +241,54 @@ class ModeloReservas{
         $stmt = null;
 
     }
+
+    /**Mostramos las testimoniales */
+    /*=============================================
+	Mostrar testimonios
+
+    $tabla1 = "testimonios";
+    $tabla2 = "habitaciones";
+    $tabla3 = "reservas";
+    $tabla4 = "usuarios";
+	=============================================*/
+
+	static public function mdlMostrarTestimonios($tabla1, $tabla2, $tabla3, $tabla4, $item, $valor){
+
+		$stmt = Conexion::conectar()->prepare("SELECT $tabla1.*, $tabla2.*, $tabla3.*,  $tabla4.* FROM $tabla1 INNER JOIN $tabla2 ON $tabla1.id_habitacion_t = $tabla2.id_h INNER JOIN $tabla3 ON $tabla1.id_reserva_t = $tabla3.id_reserva INNER JOIN $tabla4 ON $tabla1.id_usuario_t = $tabla4.id_u WHERE $item = :$item ORDER BY id_testimonio DESC");
+
+		$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+
+		$stmt -> execute();
+
+		return $stmt -> fetchAll();
+
+		$stmt = null;
+	}
+
+    /*=============================================
+	Actualizar testimonio
+	=============================================*/
+
+	static public function mdlActualizarTestimonio($tabla, $datos){
+
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET testimonio = :testimonio WHERE id_testimonio = :id_testimonio");
+
+		$stmt -> bindParam(":testimonio", $datos["testimonio"], PDO::PARAM_STR);
+		$stmt -> bindParam(":id_testimonio", $datos["id_testimonio"], PDO::PARAM_INT);
+
+		if($stmt -> execute()){
+
+			return "ok";
+
+		}else{
+
+			return "error";
+
+		}
+
+		$stmt = null;
+
+	}
 
 
 

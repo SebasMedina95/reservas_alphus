@@ -16,6 +16,7 @@ Class TablaReservas{
         $usuario = $_SESSION["id"];
         $reservas = ControladorReservas::ctrMostrarReservasUsuario($usuario);
         $servidor = ControladorRuta::ctrServidor();
+        $ruta = ControladorRuta::ctrRuta();
 
         if($reservas){
 
@@ -23,19 +24,32 @@ Class TablaReservas{
                 "data": [';
     
                 for($i = 0; $i < count($reservas); $i ++){
-    
-                    $botones = "<button title='Actualizar Testimonial de la Reserva' type='button' class='ml-1 btn btn-sm btn-warning text-white'><i class='fas fa-edit'></i></button><button title='Ver Testimonial de la Reserva' type='button' class='ml-1 btn btn-sm btn-primary text-white'><i class='fas fa-eye'></i></button><button title='Imprimir Comprobante de la Reserva' type='button' class='ml-1 btn btn-sm btn-success text-white'><i class='far fa-file-alt'></i></button>";
+                    
+                    /**Consultamos testimoniales ... */
+                    $testimonio = ControladorReservas::ctrMostrarTestimonios("id_reserva_t" , $reservas[$i]["id_reserva"]);
+                    
+                    $botones = "<button title='Actualizar Testimonial de la Reserva' type='button' class='editarTestimonio ml-1 btn btn-sm btn-warning text-white' data-toggle='modal' data-target='#actualizarTestimonio' idTestimonioEdit='".$testimonio[0]["id_testimonio"]."' editarTestimonio='".$testimonio[0]["testimonio"]."'><i class='fas fa-edit'></i></button><button title='Ver Testimonial de la Reserva' type='button' class='visualizarTestimonio ml-1 btn btn-sm btn-primary text-white' data-toggle='modal' data-target='#verTestimonio' valTestimonio='".$testimonio[0]["testimonio"]."'><i class='fas fa-eye'></i></button>";
+
+                    $otheBotones = "<a href='#' target='_blanck'><button title='Imprimir Comprobante de la Reserva' idReservaGenerarTicket='".$reservas[$i]["id_reserva"]."' class='generarTicket ml-1 btn btn-sm btn-success text-white'><i class='far fa-file-alt'></i></button></a>";
     
                     $valorReserva = "$ ".number_format($reservas[$i]["pago_reserva"], 0, ',', '.');
+
+                    $imagen = "<img src='". $servidor.$reservas[$i]["img"] ."' class='img-fluid' width='100%' title='".$reservas[$i]["descripcion_reserva"]."'>";
+
+                    $fechaInicioFormateada = date_create_from_format("Y-m-d", $reservas[$i]["fecha_ingreso"])->format("d-M-Y");
+                    $fechaFinFormateada = date_create_from_format("Y-m-d", $reservas[$i]["fecha_salida"])->format("d-M-Y");
     
                     $datosJSON .= '[
-                            "'.($i+1).'",
-                            "'.$botones.'",
+                            "'.$imagen.'",
                             "'.$reservas[$i]["codigo_reserva"].'",
-                            "'.$reservas[$i]["fecha_ingreso"].'",
-                            "'.$reservas[$i]["fecha_salida"].'",
+                            "'.$fechaInicioFormateada.'",
+                            "'.$fechaFinFormateada.'",
                             "'.$valorReserva.'",
-                            "'.$reservas[$i]["descripcion_reserva"].'"
+                            "'.$botones.'",
+                            "'.$reservas[$i]["descripcion_reserva"].'",
+                            "'.$otheBotones.'",
+                            "'.$testimonio[0]["testimonio"].'"
+                            
                     ],';
     
                 }

@@ -546,6 +546,9 @@ $(".pagarReserva").click(function(){
 
 })
 
+
+
+
 /** *********************************************************************  */
 /** ******* VAMOS A TRABAJAR EL TEMA DE MERCADO PAGO POR AQUÍ ***********  */
 

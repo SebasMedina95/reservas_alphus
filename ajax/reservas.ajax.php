@@ -38,6 +38,22 @@ Class AjaxReservas{
 
     }
 
+    /***************************************** */
+    /**TRAIGO LA RESERVA DESDE EL ID DE RESERVA*/
+    /***************************************** */
+
+    public $idReservaTicket;
+
+    /**No puede ser estático, pues lo ejecutamos inmediatamente */
+    public function ajaxTraerReservaId(){
+
+        $valor = $this->idReservaTicket;
+        $respuesta = ControladorReservas::ctrMostrarReservasId($valor);
+        /**Devolvemos en datos JSON */
+        echo json_encode($respuesta);       
+
+    }
+
 }
 
 /********************** */
@@ -60,6 +76,18 @@ if(isset($_POST["codigoReserva"])){
     $codigoReserva = new AjaxReservas();
     $codigoReserva -> codigoReserva = $_POST["codigoReserva"];
     $codigoReserva -> ajaxTraerCodigoReserva();
+
+}
+
+/************************************* */
+/**TRAEMOS RESERVA ESPECIFICADA POR ID */
+/************************************* */
+/**Nos esta llegando desde donde solicitamos la variable POST idHabitacion? */
+if(isset($_POST["idReservaTicket"])){
+
+    $idReservaTicket = new AjaxReservas();
+    $idReservaTicket -> idReservaTicket = $_POST["idReservaTicket"];
+    $idReservaTicket -> ajaxTraerReservaId();
 
 }
 

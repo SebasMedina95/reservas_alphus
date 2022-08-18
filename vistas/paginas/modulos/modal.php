@@ -698,5 +698,104 @@ VENTANA MODAL RECUPERAR CONTRASEÑA
 
     </div>
 
+</div>
+
+
+<!--=====================================
+VENTANA MODAL VER TESTIMONIALES
+======================================-->
+<div class="modal fade formulario" tabindex="-1" role="dialog" id="verTestimonio">
+	
+	<div class="modal-dialog">
+
+	    <div class="modal-content">
+
+	    	<div class="modal-header bg-dark">
+
+		        <h4 class="modal-title text-white">Testimonial de la Reserva</h4>
+
+		        <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+
+		    </div>
+
+			<div class="modal-body visorTestimonios">
+
+				<!-- Esto lo llenamos dinámicamente desde listaReservas.js consumiendo el archivo de AJAX datatablelistaReservas.ajax.php -->
+				<textarea class="form-control" rows="3" id="soloVerTestimonio" name="soloVerTestimonio" readonly></textarea>
+
+			 </div>
+
+			 <div class="modal-footer d-flex justify-content-right"> 
+
+				<div>
+
+					<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar Testimonial</button>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
 
 </div>
+
+<!--=====================================
+VENTANA MODAL ACTUALIZAR TESTIMONIALES
+======================================-->
+<div class="modal fade formulario" tabindex="-1" role="dialog" id="actualizarTestimonio">
+	
+	<div class="modal-dialog">
+
+	    <div class="modal-content">
+
+	    	<div class="modal-header bg-dark">
+
+		        <h4 class="modal-title text-white">Actualizar Testimonial de la Reserva</h4>
+
+		        <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+
+		    </div>
+
+			<div class="modal-body">
+
+				<!-- Esto lo llenamos dinámicamente desde listaReservas.js consumiendo el archivo de AJAX datatablelistaReservas.ajax.php -->
+				
+
+				<form method="post">
+
+					<input type="hidden" class="form-control" id="editarIdTestimonio" name="editarIdTestimonio">
+
+					<textarea class="form-control" rows="3" id="editarTestimonio" name="editarTestimonio"></textarea>
+
+					<div class="modal-footer d-flex justify-content-right"> 
+
+						<div>
+
+							<button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar Cambios</button>
+
+							<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar Edición Testimonial</button>
+
+						</div>
+
+					</div>
+
+					<?php
+
+						$actualizarTestimonio = new ControladorReservas();
+						$actualizarTestimonio -> ctrActualizarTestimonio();
+
+					?>
+
+				</form>
+
+			 </div>
+
+		</div>
+
+	</div>
+
+</div>
+
+

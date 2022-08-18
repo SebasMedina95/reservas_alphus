@@ -24,7 +24,7 @@ if(isset($_COOKIE["idHabitacion"]) && isset($_COOKIE["codigoReserva"])){
 	$estado = '3';
 
 	/**Debemos validar si la persona anteriormente no tiene otras reservas en estado 3,
-	 * para simular el comportamienot del as cookies completamente, si se encuentra una anterior en esta condicion, 
+	 * para simular el comportamiento de las cookies completamente, si se encuentra una anterior en esta condicion, 
 	 * lo que se hará es que se actualizara la pre reserva con los nuevos datos. */
 
 	/**Pregunto si primero este usuario no tiene una pre reserva registrada de la cual se debe hacer cargo: */
@@ -268,10 +268,10 @@ INFO PERFIL
 						<?php else: ?>
 							<!-- Si es en modo directo -->
 							<?php if($usuarioLogeado["modo"] == "directo"): ?>
-								<img src="<?php echo $servidor.$usuarioLogeado["foto"]; ?>" class="img-fluid rounded-circle" style="width: 250px;">
+								<img src="<?php echo $servidor.$usuarioLogeado["foto"]; ?>" class="img-fluid rounded-circle" style="width: 400px;">
 							<!-- Si es de alguna red social -->
 							<?php else: ?>
-								<img src="<?php echo $usuarioLogeado["foto"]; ?>" class="img-fluid rounded-circle" style="width: 250px;">
+								<img src="<?php echo $usuarioLogeado["foto"]; ?>" class="img-fluid rounded-circle" style="width: 400px;">
 							<?php endif; ?>
 
 						<?php endif; ?>
@@ -281,7 +281,9 @@ INFO PERFIL
 					<div class="text-center btn-group" role="group" aria-label="Botonera de Funciones">
 						<button title="Actualizar Foto" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#cambiarFotoPerfil"><i class="fas fa-camera-retro"></i></button>
 						<button title="Actualizar Contraseña" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#cambiarPassword"><i class="fas fa-key"></i></button>
-						<button title="Generar Reporte" type="button" class="btn btn-secondary"><i class="fas fa-book"></i></button>
+						<!-- <button title="Generar Reporte" type="button" class="btn btn-secondary"><i class="fas fa-book"></i></button> -->
+						<a href="<?php echo $ruta;  ?>vistas/paginas/modulos/reporteReservaUserV2.php" target="_blank" title="Generar Reporte" class="btn btn-secondary"><i class="fas fa-book"></i></a>
+						<a href="<?php echo $ruta;  ?>salir" title="Finalizar la Sesión" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i></a>
 					</div>
 
 					<hr>
@@ -545,7 +547,8 @@ INFO PERFIL
 												</figure>
 
 											</div>
-
+											
+											<!-- Empezamos con la de mercado pago -->
 											<div class="col-md-5 text-left">
 
 												<?php 
@@ -658,20 +661,76 @@ INFO PERFIL
 						<div class="col-12 mt-3">
 							
 							<table class="table table-responsive table-default table-bordered table-hover dt-responsive tablaListReservas">
-								<thead class="thead-dark">
+								<thead class="thead-dark text-center">
 									<tr>
-										<th>#</th>
-										<th>Comentarios</th>
-										<th>Identificación</th>
-										<th>Ingreso</th>
-										<th>Salida</th>
-										<th>Costo</th>
-										<th>Descripción</th>
+										<!-- <th>Más Info</th> -->
+										<th>Imágen_Habitación: </th>
+										<th>Cod_Reserva: </th>
+										<th>Ingreso_Reserva: </th>
+										<th>Salida_Reserva: </th>
+										<th>Valor_Reserva: </th>
+										<th>Admin_Testimonios: </th>
+										<th>Descripción: </th>
+										<th>Informes Adicionales: </th>
+										<th>Testimonial: </th>
 									</tr>
 								</thead>
 								<tbody>
 
-									<!-- Dinamico gracias a tablaListReservas -->
+									<?php 
+									
+										// $usuarioListReservas  = $_SESSION["id"];
+										// $reservasListReservas = ControladorReservas::ctrMostrarReservasUsuario($usuarioListReservas);
+										// $servidorListReservas = ControladorRuta::ctrServidor();			
+
+
+										// foreach ($reservasListReservas as $key => $value) {
+
+										// 		$valorReserva = "$ ".number_format($value["pago_reserva"], 0, ',', '.');
+										// 		$fechaInicioFormateada = date_create_from_format("Y-m-d", $value["fecha_ingreso"])->format("d-M-Y");
+										// 		$fechaFinFormateada = date_create_from_format("Y-m-d", $value["fecha_salida"])->format("d-M-Y");
+
+										// 		/**Consultamos testimoniales ... */
+										// 		$testimonio = ControladorReservas::ctrMostrarTestimonios("id_reserva_t" , $value["id_reserva"]);
+										// 		// echo  "<pre class='bg-white'>"; print_r($testimonio[0]["testimonio"]); echo  "</pre>";
+
+										// 	echo '
+										// 	<tr>
+												
+										// 		<td><img src="'. $servidorListReservas.$value["img"] .'" class="img-fluid" width="100%" title="'.$value["descripcion_reserva"].'"></td>
+										// 		<td>'.$value["codigo_reserva"].'</td>
+										// 		<td>'.$fechaInicioFormateada.'</td>
+										// 		<td>'.$fechaFinFormateada.'</td>
+										// 		<td>'.$valorReserva.'</td>
+										// 		<td>
+
+										// 			<button title="Actualizar Testimonial de la Reserva" type="button" class="ml-1 btn btn-sm btn-warning text-white actualizarTestimonio" data-toggle="modal" data-target="#actualizarTestimonio" verTestimonio="'.$testimonio[0]["testimonio"].'" idTestimonio="'.$testimonio[0]["id_testimonio"].'">
+													
+										// 				<i class="fas fa-edit"></i>
+														
+										// 			</button>
+													
+										// 			<button title="Ver Testimonial de la Reserva" type="button" class="visualizarTestimonio btn btn-sm btn-primary text-white" data-toggle="modal" data-target="#verTestimonio" valTestimonio="'.$testimonio[0]["testimonio"].'"> 
+													
+										// 				<i class="fas fa-eye"></i>
+
+										// 			</button>
+
+										// 		</td>
+										// 		<td>'.$value["descripcion_reserva"].'</td>
+										// 		<td>
+										// 			<href title="Imprimir Comprobante de la Reserva" class="ml-1 btn btn-sm btn-success text-white"><i class="far fa-file-alt"></i> Generar Comprobante de Reserva '. $value["codigo_reserva"] .'</href>
+										// 		</td>
+										// 		<td>
+										// 			Testimonial: '.$testimonio[0]["testimonio"].'
+										// 		</td>
+
+
+										// 	</tr>';
+
+										// }
+
+									?>
 
 								</tbody>
 
@@ -968,3 +1027,5 @@ VENTANA MODAL PAGAR USANDO PAYU
 	 </div>
 
 </div>
+
+
