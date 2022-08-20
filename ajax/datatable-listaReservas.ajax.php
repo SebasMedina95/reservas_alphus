@@ -24,6 +24,12 @@ Class TablaReservas{
                 "data": [';
     
                 for($i = 0; $i < count($reservas); $i ++){
+
+                    /**Voy a tomar la primera imágen de la galería */
+                    /**Convertimos el String de galería en una Array. Esto lo hacemos por que no necesitamos traer de todas las habitaciones
+					   si no solamente de la que estémos parados en ese momento. **/
+                    $galeria = json_decode($reservas[$i]["galeria"], true);
+                    $imagenGaleria = $galeria[0]; /**Cojamos la primera... */
                     
                     /**Consultamos testimoniales ... */
                     $testimonio = ControladorReservas::ctrMostrarTestimonios("id_reserva_t" , $reservas[$i]["id_reserva"]);
@@ -34,7 +40,7 @@ Class TablaReservas{
     
                     $valorReserva = "$ ".number_format($reservas[$i]["pago_reserva"], 0, ',', '.');
 
-                    $imagen = "<img src='". $servidor.$reservas[$i]["img"] ."' class='img-fluid' width='100%' title='".$reservas[$i]["descripcion_reserva"]."'>";
+                    $imagen = "<img src='". $servidor.$imagenGaleria ."' class='img-fluid' width='100%' title='".$reservas[$i]["descripcion_reserva"]."'>";
 
                     $fechaInicioFormateada = date_create_from_format("Y-m-d", $reservas[$i]["fecha_ingreso"])->format("d-M-Y");
                     $fechaFinFormateada = date_create_from_format("Y-m-d", $reservas[$i]["fecha_salida"])->format("d-M-Y");
@@ -71,7 +77,9 @@ Class TablaReservas{
                     $valorReserva = "$ -";
     
                     $datosJSON .= '[
-                            "'.(1).'",
+                            "'.$botones.'",
+                            "'.$botones.'",
+                            "'.$botones.'",
                             "'.$botones.'",
                             "'.$botones.'",
                             "'.$botones.'",

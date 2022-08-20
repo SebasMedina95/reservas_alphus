@@ -86,7 +86,8 @@ TESTIMONIOS
 
 .testimonios{
 	position:relative;
-	background: url(../img/fondoComentarios.png);
+	/* background: url(../img/fondoComentarios.png); */
+	background: url(../img/fondoComentarios.jpg);
 	background-position: center top;
 	background-repeat: no-repeat;
 	background-size: cover;

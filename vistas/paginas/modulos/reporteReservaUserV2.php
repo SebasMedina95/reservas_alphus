@@ -15,6 +15,7 @@ require_once "../../../modelos/reservas.modelo.php";
 require_once "../../../controladores/usuarios.controlador.php";
 require_once "../../../modelos/usuarios.modelo.php";
 
+
 $ruta = ControladorRuta::ctrRuta();
 $servidor = ControladorRuta::ctrServidor();
 session_start(); /**Para manejar variables de sesión ... */
@@ -102,10 +103,13 @@ foreach ($reservasListReservas as $key => $value) {
 
     $testimonio = ControladorReservas::ctrMostrarTestimonios("id_reserva_t" , $value["id_reserva"]);
 
+    $galeria = json_decode($value["galeria"], true);
+    $imagenGaleria = $galeria[0]; /**Cojamos la primera... */
+
     // $pdf->Row(array(utf8_decode($nombre),utf8_decode($categoria),$codigo,$stock,utf8_decode($descripcion)));
     $pdf->Row(
         array(
-            $pdf->Cell($pdf->GetX()-10, 0, $pdf->Image(''.$servidorListReservas.$value["img"].'' , $pdf->GetX()+3, $pdf->GetY()+2,0, 22)) , 
+            $pdf->Cell($pdf->GetX()-10, 0, $pdf->Image(''.$servidorListReservas.$imagenGaleria.'' , $pdf->GetX()+2, $pdf->GetY()+4,0, 17)) , 
             $value["codigo_reserva"], 
             'Desde: ' . $fechaInicioFormateada . '  Hasta: ' . $fechaFinFormateada,
             utf8_decode($value["descripcion_reserva"]), 
@@ -114,7 +118,7 @@ foreach ($reservasListReservas as $key => $value) {
         )
     );
 
-    if($contador == 6){
+    if($contador == 7){
         $pdf->AddPage();
         $contador = 0;
     }else{
@@ -130,11 +134,9 @@ foreach ($reservasListReservas as $key => $value) {
     //         $pdf->Cell(35,6, $testimonio[0]["testimonio"])
     //     )
     // );
-    
-    
+        
 }
 
 $pdf->Output();
-
 
 ?>

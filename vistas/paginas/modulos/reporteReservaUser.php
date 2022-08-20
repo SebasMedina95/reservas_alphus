@@ -127,8 +127,8 @@ ob_start(); /**Preparamos el buffer para llenarlo con la información, de aquí 
     $dompdf->loadHtml($html);
 
     /**Creamos el documento en formato de carta*/
-    //$dompdf->setPaper('letter'); 
-    $dompdf->setPaper('A4', 'landscape'); //Otra opción
+    $dompdf->setPaper('letter'); 
+    //$dompdf->setPaper('A4', 'landscape'); //Otra opción
     
     $dompdf->render();
     $dompdf->stream("ReporteReservasUsuario_.pdf", array("Attachment" => false)); //False no se descarga directamente, se visualiza primero, true se descarca inmediatamente

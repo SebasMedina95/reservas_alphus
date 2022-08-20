@@ -20,8 +20,9 @@ class ControladorReservas{
         $tabla1 = "habitaciones";
         $tabla2 = "reservas";
         $tabla3 = "categorias";
+        $tabla4 = "usuarios";
 
-        $respuesta = ModeloReservas::mdlMostrarReservasId($tabla1, $tabla2, $tabla3, $valor);
+        $respuesta = ModeloReservas::mdlMostrarReservasId($tabla1, $tabla2, $tabla3, $tabla4, $valor);
         return $respuesta;
 
     }
@@ -162,7 +163,7 @@ class ControladorReservas{
                             
                             });
 
-                            window.location.replace("http://localhost/reservas-alphus/perfil");
+                            window.location.replace("http://reservas-alphus.com/perfil");
 
 						</script>';
 

@@ -8,30 +8,39 @@ CONTÁCTENOS
 		
 		<h1 class="py-sm-4">CONTÁCTENOS</h1>
 
-		<form>
+		<form method="POST">
 
 			<div class="input-group input-group-lg">
 				
-				<input type="text" class="form-control mb-3 mr-2 form-control-lg" placeholder="Proporcione el Nombre ...">
+				<input type="text" class="form-control mb-3 mr-2 form-control-lg" placeholder="Nombre" name="nombreContactenos">
 
-				<input type="text" class="form-control mb-3 ml-2 form-control-lg" placeholder="Proporcione el Apellido ...">
+				<input type="text" class="form-control mb-3 ml-2 form-control-lg" placeholder="Apellido" name="apellidoContactenos">
 
 			</div>
 
 			<div class="input-group input-group-lg">
 				
-				<input type="number" class="form-control mb-3 mr-2 form-control-lg" placeholder="Proporcione el Móvil ...">
+				<input type="text" class="form-control mb-3 mr-2 form-control-lg" placeholder="Móvil" name="movilContactenos">
 
-				<input type="text" class="form-control mb-3 ml-2 form-control-lg" placeholder="Proporcione el Correo Electrónico ...">
+				<input type="text" class="form-control mb-3 ml-2 form-control-lg" placeholder="Correo Electrónico" name="correoContactenos">
 
 			</div>
 
-			<textarea class="form-control" rows="6" placeholder="Proporcione el mensaje que desea hacernos llegar . . ."></textarea>
+			<textarea class="form-control" rows="6" placeholder="Escribe aquí tu mensaje" name="mensajeContactenos"></textarea>
 
-			<input class="btn btn-dark my-4 btn-lg py-3 text-uppercase" value="Enviar Mensaje">
+			<input class="btn btn-dark my-4 btn-lg py-3 text-uppercase" value="Enviar">
+
+			<?php
+
+				$contactenos = new ControladorUsuarios();
+				$contactenos -> ctrFormularioContactenos();
+
+			?>
 
 		</form>
 
 	</div>
 
 </div>
+
+<br>

@@ -195,7 +195,7 @@ if(isset($_GET["pagina"])){
 	
 				echo "<script>
 	
-						window.location.replace('http://localhost/reservas-alphus/cuenta-verificada');
+						window.location.replace('http://reservas-alphus.com/cuenta-verificada');
 	
 					</script>";
 	
@@ -222,7 +222,14 @@ if(isset($_GET["pagina"])){
 	}
 
 	/**Lista blanca de páginas internas */
-	if($rutas[0] == "reservas" || $rutas[0] == "perfil" || $rutas[0] == "carta" || $rutas[0] == "perfil-pre" || $rutas[0] == "cuenta-verificada" || $rutas[0] == "salir"){
+	if($rutas[0] == "reservas" || 
+	   $rutas[0] == "perfil" || 
+	   $rutas[0] == "carta" || 
+	   $rutas[0] == "perfil-pre" ||
+	   $rutas[0] == "duda-enviada" ||  
+	   $rutas[0] == "cuenta-verificada" || 
+	   $rutas[0] == "salir" || 
+	   $rutas[0] == "ticketComprobante"){
 
 		include "paginas/".$rutas[0].".php"; //Lo que nos traiga la URL .php
 

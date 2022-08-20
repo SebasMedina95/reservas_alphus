@@ -671,7 +671,7 @@ INFO PERFIL
 										<th>Valor_Reserva: </th>
 										<th>Admin_Testimonios: </th>
 										<th>Descripción: </th>
-										<th>Informes Adicionales: </th>
+										<th>Comprobante_Reserva: </th>
 										<th>Testimonial: </th>
 									</tr>
 								</thead>

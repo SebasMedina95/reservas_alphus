@@ -7,4 +7,4 @@ include "modulos/planes.php";
 include "modulos/planes-movil.php";
 include "modulos/recorrido-pueblo.php";
 include "modulos/restaurante.php";
-include "modulos/contactenos-hotel.php";
+// include "modulos/contactenos-hotel.php";

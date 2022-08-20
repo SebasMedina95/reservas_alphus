@@ -20,11 +20,14 @@ class ModeloReservas{
 
     }
 
-    /**MOSTRAMOS TODAS LAS HABITACIONES(Tabla1) - RESERVAS(Tabla2) - CATEGORIAS(Tabla3) - ESTE SE USA PARA MOSTRAR UNA RESERVA EN ESPECÍFICA*/
-    static public function mdlMostrarReservasId($tabla1, $tabla2, $tabla3, $valor){
+    /**MOSTRAMOS TODAS LAS HABITACIONES(Tabla1) - 
+     *                     RESERVAS(Tabla2) - 
+     *                     CATEGORIAS(Tabla3) - 
+     *                     USUARIOS(Tabla4) - ESTE SE USA PARA MOSTRAR UNA RESERVA EN ESPECÍFICA*/
+    static public function mdlMostrarReservasId($tabla1, $tabla2, $tabla3, $tabla4, $valor){
 
         /**Traigo la información común entre habitaciones y categorías con base al id y lo uno con un tercer que sería la reserva. */
-        $stmt = Conexion::conectar()->prepare("SELECT $tabla1.* , $tabla2.* , $tabla3.* FROM $tabla1 INNER JOIN $tabla2 ON $tabla1.id_h = $tabla2.id_habitacion INNER JOIN $tabla3 ON $tabla1.tipo_h = $tabla3.id WHERE id_reserva = :id_reserva AND $tabla2.estado_pago = '1'");
+        $stmt = Conexion::conectar()->prepare("SELECT $tabla1.* , $tabla2.* , $tabla3.*, $tabla4.* FROM $tabla1 INNER JOIN $tabla2 ON $tabla1.id_h = $tabla2.id_habitacion INNER JOIN $tabla3 ON $tabla1.tipo_h = $tabla3.id INNER JOIN $tabla4 ON $tabla2.id_usuario = $tabla4.id_u WHERE id_reserva = :id_reserva AND $tabla2.estado_pago = '1'");
         /**Enlazamos el parámetro */
         $stmt -> bindParam(":id_reserva", $valor, PDO::PARAM_STR);
 

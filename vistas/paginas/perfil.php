@@ -9,7 +9,7 @@ if(isset($_SESSION["validarSesion"])){
         include "modulos/habitaciones.php";
         include "modulos/planes.php";
         include "modulos/planes-movil.php";
-        include "modulos/contactenos-hotel.php";
+        //include "modulos/contactenos-hotel.php";
 
     }else{
 

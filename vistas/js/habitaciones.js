@@ -115,6 +115,110 @@ $(".cabeceraHabitacion .dropdown .dropdown-menu a").click(function(e){
             $("#dropdown1").html(respuesta[orden]["tipo"] + " - Temática " + respuesta[orden]["estilo"]);
             /**Actualizamos el name para el formulario de consulta de disponibilidad desde categorías de habitación */
             $('input[name="id-habitacion"]').val(respuesta[orden]["id_h"]);
+
+            /*=============================================
+			TRAER TESTIMONIOS
+            Vamos a traerlos en paralelo vamos mostrando las habitaciones
+			=============================================*/
+            var datosTestimonios = new FormData();
+			datosTestimonios.append("id_h", respuesta[orden]["id_h"]);
+
+            $.ajax({
+                url:urlPrincipal+"ajax/reservas.ajax.php",
+				method: "POST",
+				data: datosTestimonios,
+				cache: false,
+				contentType: false,
+				processData: false,
+				dataType:"json",
+				success:function(respuesta2){
+                    
+                    // console.log("respuesta" , respuesta2);
+                    var cantidadTestimonios = 0;
+					var idTestimonios = [];
+					
+                    /**Primero vaciamos los testimonios */
+					$(".testimonios .row").html("");
+                    /**Remuevo los ver mas y menos de la estructura */
+                    $(".verMasTestimonios").remove();
+					$(".verMenosTestimonios").remove();
+                    /**Dejo la altura auto por defecto a la maquetación */
+					$(".testimonios .row").css({'height':"auto"})
+                    /**Averiguamos y capturamos las reservas que estan aprobadas, pero recorremos primero */
+                    for(var i = 0; i < respuesta2.length; i ++){
+                        /**Si esta aprobada */
+						if(respuesta2[i]["aprobado"] != 0){
+                            /**Calculos */
+							cantidadTestimonios++;
+							idTestimonios.push(respuesta2[i]["id_testimonio"]);
+
+						}/**Condicional */
+					}/**Ciclo For */
+
+                    /**Aplicamos la misma validación que cuando llegamos a la habitación */
+                    if(cantidadTestimonios >= 4){
+                        /**Vamos guardando las fotos que vamos obteniendo para que no se pierdan */
+						var foto = [];
+                        /**For para recorrer los aprobados */
+						for(var i = 0; i < idTestimonios.length; i ++){
+                            /**Si no tenemos fotos */
+							if(respuesta2[i]["foto"] == ""){
+                                /**Guardamos en el array la foto default */
+								foto[i] = urlServidor+"vistas/img/usuarios/default/default.png";
+							
+							}else{
+                                /**Si tenemos el modo directo de registro */
+								if(respuesta2[i]["modo"] == "directo"){
+                                    /**Guardamos la foto del servidor en el array */
+									foto[i] = urlServidor+respuesta2[i]["foto"];
+
+								}else{
+                                    /**Guardamos la de las redes sociales */
+									foto[i] = respuesta2[i]["foto"];
+
+								}
+
+							}
+                            /**Aplicamos el div con la información, vamos agregando con el append y usamos `` para evitar
+                             * truncar el proceso con las comillas*/
+							$(".testimonios .row").append(`
+
+								<div class="col-12 col-lg-3 text-center p-4">
+
+									<img src="`+foto[i]+`" class="img-fluid rounded-circle" w-50">	
+																
+									<h4 class="py-4">`+respuesta2[i]["nombre"]+`</h4>
+
+									<p>`+respuesta2[i]["testimonio"]+`</p>
+
+								</div>
+
+							`);
+                            /**Aplicamos el redimensionamiento */
+							$(".testimonios .row").css({'height':$(".testimonios .row div").height()+50+"px", 
+														'overflow':'hidden'})
+
+						}/**Ciclo for */
+
+					}else{
+
+                        $(".testimonios .row").html('<div class="col-12 text-white text-center">¡Esta habitación aún no tiene testimonios!</div>');
+
+                    }
+
+                    if(cantidadTestimonios > 4){
+
+						$(".testimonios .row").after(`
+							
+			     				<button class="btn btn-default px-4 float-right verMasTestimonios">VER MÁS</button>
+			     			
+			     		`);
+
+					}
+
+                }
+            });
+
         }
     
     }) //Ajax
@@ -122,11 +226,44 @@ $(".cabeceraHabitacion .dropdown .dropdown-menu a").click(function(e){
 }) //cabeceraHabitacion ul.nav li.nav-item a
 
 /** ****************************************************************************************  */
-/** ****************************************************************************************  */
-/** USANDO JS NATIVO Y, LAS VARIABLES ORDEN Y RUTA, VAMOS A INCORPORAR
- *  UN SLIDE-CARRUSEL PARA MOSTRAR LOS TIPOS DE HABITACIÓN Y QUE, NO SEA
- *  5 POR DEFECTO SI NO QUE PUEDAN SER MAS. */
-/** ****************************************************************************************  */
+/** BLOQUE PARA VER MAS TESTIMONIOS */
 /** ****************************************************************************************  */
 
+/**Capturamos la altura actual ... */
+let alturaTestimonios = $(".testimonios .row").height();
+/**Capturamos solo lo que trae la altura deld div */
+let alturaTestimoniosCorta = $(".testimonios .row div").height()+50;
+
+/**Modifico el css dando una nueva altura */
+$(".testimonios .row").css({'height':alturaTestimoniosCorta+"px",
+							'overflow':'hidden'});
+
+/**Como antes hacemos una lectura de PHP, por provención, cuando se haya cargado todo ejecutamos,
+ * por eso usaremos el on, lo mismo aplicaremos cuando sea el verMenosTestimonios  */
+$(document).on("click", ".verMasTestimonios", function(){
+
+
+    $(".testimonios .row").css({'height':alturaTestimonios+"px", 
+                                'overflow':'hidden'})
+
+    $(this).removeClass("verMasTestimonios");
+    $(this).addClass("verMenosTestimonios");
+    $(this).html("Ver menos");
+
+});
+
+$(document).on("click", ".verMenosTestimonios", function(){
+
+
+	$(".testimonios .row").css({'height':alturaTestimoniosCorta+"px", 
+								'overflow':'hidden'})
+
+	$(this).removeClass("verMenosTestimonios");
+	$(this).addClass("verMasTestimonios");
+	$(this).html("Ver más");
+
+});
+
+// console.log("alturaTestimonios" , alturaTestimonios);
+// console.log("alturaTestimoniosCorta" , alturaTestimoniosCorta);
 

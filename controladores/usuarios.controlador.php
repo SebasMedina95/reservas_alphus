@@ -218,7 +218,7 @@ Class ControladorUsuarios{
                     /** ----- Redireccionamos y ajustamos con ello los elementos POST ----- */
                     echo "<script>
 
-                        window.location.replace('http://localhost/reservas-alphus/perfil-pre');
+                        window.location.replace('http://reservas-alphus.com/perfil-pre');
 
                     </script>";
 
@@ -910,6 +910,141 @@ Class ControladorUsuarios{
 
 
 	}
+
+    /**FORMULARIO DE CONTACTENOS */
+    public function ctrFormularioContactenos(){
+
+        if(isset($_POST["mensajeContactenos"])){
+
+            if( preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nombreContactenos"]) &&
+				preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["apellidoContactenos"]) &&
+				preg_match('/^[0-9- ]+$/', $_POST["movilContactenos"]) &&
+			    preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $_POST["correoContactenos"]) &&
+			   preg_match('/^[?\\¿\\!\\¡\\:\\,\\.\\a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["mensajeContactenos"])
+			 ){
+
+                /*=============================================
+				VERIFICACIÓN CORREO ELECTRÓNICO
+				=============================================*/
+
+				date_default_timezone_set("America/Bogota");
+
+				$ruta = ControladorRuta::ctrRuta();
+
+				$mail = new PHPMailer;
+
+				$mail->CharSet = 'UTF-8';
+
+				$mail->isMail();
+
+				$mail->setFrom('servicioreservas@hotelalphus.com', 'Hotel Alphus');
+
+                $mail->addReplyTo('servicioreservas@hotelalphus.com', 'Hotel Alphus');
+
+				$mail->Subject = "Por favor verifique su dirección de correo electrónico";
+
+				$mail->addAddress("tucorreo@tudominio.com");
+
+				$mail->msgHTML('<div style="width:100%; background:#eee; position:relative; font-family:sans-serif; padding-bottom:40px">
+	
+                        <center>
+                                            
+                            <img style="padding:20px; width:100%" src="https://scontent.feoh1-1.fna.fbcdn.net/v/t39.30808-6/278097240_4487553271345710_8428121617014453228_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=0debeb&_nc_eui2=AeGRJKxtey_5eUC3-P-ogLJ2ScHC1dzezpxJwcLV3N7OnIY_NUYikGJjen08-Hek1OBZGVZEzfPk9juvA-bkwozS&_nc_ohc=27upOpKagmYAX-LQZ0y&_nc_oc=AQk-utLmni1XMVDHbU-sP_2aO5JCGYkxP42pb_J9wTPydPxud9N_7A1HPCcSNWXM5QI&_nc_ht=scontent.feoh1-1.fna&oh=00_AT-7z7gy725Fl62X4TNroBwX19_kuDoIP7gPmBto2Yis1w&oe=6254DC9D">
+
+                        </center>
+
+						<div style="position:relative; margin:auto; width:600px; background:white; padding-bottom:20px">
+
+							<center>
+								
+                                <img style="padding:20px; width:30%" src="https://espaimaternalactiu.com/wp-content/uploads/2017/04/icono-mail.png">
+
+								<h3 style="font-weight:100; color:#999;">HA RECIBIDO UNA CONSULTA</h3>
+
+								<hr style="width:80%; border:1px solid #ccc">
+
+								<h4 style="font-weight:100; color:#999; padding:0px 20px; text-transform:uppercase">'.$_POST["nombreContactenos"].' '.$_POST["apellidoContactenos"].'</h4>
+								<h4 style="font-weight:100; color:#999; padding:0px 20px;">Móvil: '.$_POST["movilContactenos"].'</h4>
+								<h4 style="font-weight:100; color:#999; padding:0px 20px;">Email: '.$_POST["correoContactenos"].'</h4>
+								<h4 style="font-weight:100; color:#999; padding:0px 20px">'.$_POST["mensajeContactenos"].'</h4>
+
+								<hr style="width:80%; border:1px solid #ccc">
+
+							</center>
+
+						</div>
+						
+					</div>
+				');
+
+                $envio = $mail->Send();
+
+				if(!$envio){
+
+					echo'<script>
+
+                        swal.fire({
+                            position: "top-center",
+                            icon: "error",
+                            title: "¡ Ha ocurrido un problema enviando el email, por favor, vuelva a intentarlo !",
+                            showConfirmButton: false
+                        
+                        });
+
+                    </script>';
+                }else{
+
+                    /** ----- Redireccionamos y ajustamos con ello los elementos POST ----- */
+                    echo "<script>
+
+                        window.location.replace('http://reservas-alphus.com/duda-enviada');
+
+                    </script>";
+                } 
+
+             }else{
+
+                echo'<script>
+
+                    swal.fire({
+                        icon: "error",
+                        title: "Oops... ¡CORREGIR!",
+                        text: "¡No se permite el ingreso de caracteres especiales!",
+                        
+                    }).then(function(result){
+
+                        if(result.value){   
+                            history.back();
+                        } 
+
+                    });
+
+				</script>';
+
+             }
+
+        }else{
+
+            // echo'<script>
+
+            //     swal.fire({
+            //         icon: "error",
+            //         title: "Oops... ¡CORREGIR!",
+            //         text: "¡Debe diligenciar todos los campos de contacto para enviarnos una inquietud!",
+                    
+            //     }).then(function(result){
+
+            //         if(result.value){   
+            //             history.back();
+            //         } 
+
+            //     });
+
+            // </script>';
+
+        }
+
+    }
 
 
 } /**Clase general */

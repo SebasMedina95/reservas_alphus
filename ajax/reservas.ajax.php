@@ -54,6 +54,22 @@ Class AjaxReservas{
 
     }
 
+    /***************************************** */
+    /**TRAIGO TESTIMONIOS*/
+    /***************************************** */
+    public $id_h;
+
+	public function ajaxTraerTestimonios(){
+
+		$item = "id_habitacion_t";
+		$valor = $this->id_h;
+
+		$respuesta = ControladorReservas::ctrMostrarTestimonios($item, $valor);
+
+		echo json_encode($respuesta);
+
+	}
+
 }
 
 /********************** */
@@ -88,6 +104,18 @@ if(isset($_POST["idReservaTicket"])){
     $idReservaTicket = new AjaxReservas();
     $idReservaTicket -> idReservaTicket = $_POST["idReservaTicket"];
     $idReservaTicket -> ajaxTraerReservaId();
+
+}
+
+/************************************* */
+/**TRAEMOS LOS TESTIMONIOS */
+/************************************* */
+
+if(isset($_POST["id_h"])){
+
+	$id_h = new AjaxReservas();
+	$id_h -> id_h = $_POST["id_h"];
+	$id_h -> ajaxTraerTestimonios();
 
 }
 
