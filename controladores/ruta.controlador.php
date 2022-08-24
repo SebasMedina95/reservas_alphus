@@ -13,7 +13,8 @@ class ControladorRuta{
 
 	static public function ctrServidor(){
 
-		return 'http://reservas-alphus.com/administracion/'; /**Esto esta configurado con dominio virtual */
+		return 'http://admon-reservas-alphus.com/'; /**Esto esta configurado con dominio virtual */
+		// return 'http://reservas-alphus.com/administracion/'; /**Esto esta configurado con dominio virtual */
 		// return 'http://localhost/reservas-alphus/administracion/';
 		// return 'https://localhost/reservas-alphus/administracion/';
 

@@ -7,7 +7,7 @@ CONTÁCTENOS
 	
 	<div class="container text-center">
 		
-		<h1 class="py-sm-4">CONTÁCTENOS</h1>
+		<h1 class="py-sm-8">CONTÁCTENOS</h1>
 
 		<form method="POST">
 
