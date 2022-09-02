@@ -114,6 +114,65 @@ $('input[name="registroEmail"]').change(function(){
 
 }); /**Si el input del correo cambia */
 
+$("input[name='cambiarImagen']").change(function(){
+	console.log("Cargamos una imágen ...");
+    let imagen = this.files[0];
+    let tamaImg = imagen["size"];
+    let tipoImg = imagen["type"];
+    let nameImg = imagen["name"];
+
+	console.log(imagen);
+    console.log(tamaImg);
+    console.log(tipoImg);
+    console.log(nameImg);
+
+    /**Solo admitiremos imágenes JPG y PNG */
+    if(tipoImg != "image/jpeg" && tipoImg != "image/png"){
+
+        $("input[name='cambiarImagen']").val("");
+        $("#nombreImagenAdmins").text("Sin determinar");
+        $("#tamanoImagenAdmins").text("Sin determinar");
+        $("#extensImagenAdmins").text("Sin determinar");
+        $("#img-foto").attr("src", ""); /**Se deja por defecto vacío */
+  
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '¡ Solo imágenes JPG y PNG son permitidas !'
+        })
+            
+    }else if(tamaImg > 2000000){
+
+        $("input[name='cambiarImagen']").val("");
+        $("#nombreImagenAdmins").text("Sin determinar");
+        $("#tamanoImagenAdmins").text("Sin determinar");
+        $("#extensImagenAdmins").text("Sin determinar");
+        $("#img-foto").attr("src", ""); /**Se deja por defecto vacío */
+  
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '¡ La imágen no puede pesar mas de 2MB !'
+        })
+  
+    }else{
+        console.log("----- PODEMOS CARGAR IMÁGEN -----");
+        let datosImagen = new FileReader;
+        datosImagen.readAsDataURL(imagen);
+
+        $(datosImagen).on("load", function(event){
+            let rutaImagen = event.target.result;
+            $("#img-foto").attr("src", rutaImagen);
+            $("#nombreImagenAdmins").text(nameImg);
+            $("#tamanoImagenAdmins").text(tamaImg);
+            $("#extensImagenAdmins").text(tipoImg);
+
+        })
+
+    }
+
+})
+
 
 /***************************************** */
 /**TRABAJAMOS AHORA CON LA APP DE FACEBOOK */

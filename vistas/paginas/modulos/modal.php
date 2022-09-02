@@ -508,7 +508,7 @@ VENTANA MODAL REGISTRO
 
 					<div class="form-group">
 
-						<input type="file" class="form-control-file border" name="cambiarImagen" required>
+						<input type="file" class="form-control-file border" id="cambiarImagen" name="cambiarImagen" required>
 
 						<!-- Para evitar ataques en el sistema de mandar imagene vacias -->
 						<input type="hidden" name="fotoActual" value="<?php echo $usuarioLogeado["foto"]; ?>">
@@ -517,19 +517,27 @@ VENTANA MODAL REGISTRO
 
 				</div>
 
-				<div class="modal-footer d-flex justify-content-between">  
+				<!-- ************************************************ -->
+				<!-- ********** PREVISUALIZACIÓN DE IMÁGEN ********** -->
+				<!-- ************************************************ -->
+				<div class="imagenPrevia" id="imagenPrevia" style="margin: 0 auto; justify-content: center; width: 275px;">
 
-				<div>
-
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+					<img src="" alt="" id="img-foto" class="img-fluid imagenAdmins">
+					<hr>
+					<p><b>Nombre de la imágen: </b> <span id="nombreImagenAdmins"></span></p>
+					<p class="lineaPImgAdmin"><b>Tamaño de la imágen: </b> <span id="tamanoImagenAdmins"></span></p>
+					<p class="lineaPImgAdmin"><b>Tipo de la imágen:   </b> <span id="extensImagenAdmins"></span></p>
 
 				</div>
 
-				<div>
+				<div class="modal-footer d-flex justify-content-right">  
+					
+					<div>
+						
+						<button type="submit" class="btn btn-primary"><i class="far fa-paper-plane"></i> Enviar Imagen</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 
-					<button type="submit" class="btn btn-primary"><i class="far fa-paper-plane"></i> Enviar Imagen</button>
-
-				</div>
+					</div>
 
 				</div>
 

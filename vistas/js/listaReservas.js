@@ -27,7 +27,7 @@ $(document).ready(function() {
                 "sInfoEmpty":      "Mostrando reservas del 0 al 0 de un total de 0",
                 "sInfoFiltered":   "(filtrado de un total de _MAX_ reservas)",
                 "sInfoPostFix":    "",
-                "sSearch":         "Buscar Reserva en la Tabla:",
+                "sSearch":         "Buscar Reserva:",
                 "sUrl":            "",
                 "sInfoThousands":  ",",
                 "sLoadingRecords": "Cargando...",

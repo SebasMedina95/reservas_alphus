@@ -434,8 +434,10 @@ Class ControladorUsuarios{
 
         /**Preguntamos primero si nos llega la variable POST */
         if(isset($_POST["idUsuarioFoto"])){
+            /**Llamamos al servidor */
+            $servidor = ControladorRuta::ctrServidor();
             /**Si no llega imagen que guarde la de la Base de Datos */
-            $ruta = "administracion/".$_POST["fotoActual"];
+            $ruta = $_POST["fotoActual"];
             /**Si viene una variable POST de archivo llamada cambiarImagen y no viene vacía ... */
             if(isset($_FILES["cambiarImagen"]["tmp_name"]) && !empty($_FILES["cambiarImagen"]["tmp_name"])){
 
@@ -447,8 +449,9 @@ Class ControladorUsuarios{
 				/*=============================================
 				CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL USUARIO
 				=============================================*/
-
-				$directorio = "administracion/vistas/img/usuarios/".$_POST["idUsuarioFoto"];
+                /**Sabiendo que servidor = http://admon-reservas-alphus.com/ */
+				//$directorio = $servidor."vistas/img/usuarios/".$_POST["idUsuarioFoto"];
+				$directorio = "../reservas-alphus-admon/vistas/img/usuarios/".$_POST["idUsuarioFoto"];
 
 				/*=============================================
 				PRIMERO PREGUNTAMOS SI EXISTE OTRA IMAGEN EN LA BD
@@ -492,7 +495,7 @@ Class ControladorUsuarios{
                     $aleatorio2 = mt_rand(100,999);
                     $aleatorio = $aleatorio1 + $aleatorio2;
 
-					$ruta = $directorio."/".$aleatorio.".jpg";
+					$ruta = $directorio."/".$_POST["idUsuarioFoto"].".jpg";
                     /**Creamos una imagen de acuerdo al archivo temporal */
 					$origen = imagecreatefromjpeg($_FILES["cambiarImagen"]["tmp_name"]);
                     /**Creamos la imagen de acuerdo al nuevo ancho y al nuevo largo */
@@ -511,7 +514,7 @@ Class ControladorUsuarios{
                     $aleatorio2 = mt_rand(100,999);
                     $aleatorio = $aleatorio1 + $aleatorio2;
 
-					$ruta = $directorio."/".$aleatorio.".png";
+					$ruta = $directorio."/".$_POST["idUsuarioFoto"].".png";
                     /**Creamos una imagen de acuerdo al archivo temporal */
 					$origen = imagecreatefrompng($_FILES["cambiarImagen"]["tmp_name"]);	
                     /**Creamos la imagen de acuerdo al nuevo ancho y al nuevo largo */					
@@ -542,9 +545,10 @@ Class ControladorUsuarios{
 					</script>';
 
 				}
-                /**Por que si no nos quedaría algo del tipo administracion/vistas/img/usuarios/###.jpg
+                /**Por que si no nos quedaría algo del tipo http://admon-reservas-alphus.com/vistas/img/usuarios/###.jpg aca seria 33
+                 * ../reservas-alphus-admon/vistas/img/usuarios/  aca seria 25
                  * Entonces debemos quitar los primeros 15 caracteres que corresponde a administracion/ */
-                $ruta = substr($ruta, 15);
+                $ruta = substr($ruta, 25);
 
             }
 
