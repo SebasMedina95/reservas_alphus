@@ -159,8 +159,8 @@ VENTANA MODAL INGRESO
     <div class="modal-content">
 
       <div class="modal-header bg-dark text-white">
-        <h4 class="modal-title">Ingresar</h4>
-        <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+        <h4 style="margin-top: 3px;">Ingresar al sistema</h4>
+        
       </div>
 
       <div class="modal-body">
@@ -260,8 +260,33 @@ VENTANA MODAL INGRESO
 				</a>
 
 			</div>
+			
+			<div class="container">
+
+				<div class="row">
+
+					<div class="col-6">
+
+						<input type="submit" class="btn btn-dark btn-block" value="Ingresar al sistema">	
+
+					</div>
+
+					<div class="col-6">
+
+						<input type="button" class="btn btn-danger btn-block" data-dismiss="modal" value="Cerrar Ventana">
+					</div>
+
+				</div>
+
+			</div>
+			
+			<!-- <div class="btn-group btn-group-toggle">
 					
-			<input type="submit" class="btn btn-dark btn-block" value="Ingresar">
+				<button type="submit" class="btn btn-dark btn-block"></button>
+
+				<button type="button" class="close btn btn-danger btn-block" data-dismiss="modal"></button>
+
+			</div> -->
 
 			<?php
 
@@ -306,8 +331,8 @@ VENTANA MODAL REGISTRO
     <div class="modal-content">
 
       <div class="modal-header bg-dark text-white">
-        <h4 class="modal-title">Registarse</h4>
-        <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+	  	<h4 style="margin-top: 3px;">Registrarme al sistema</h4>
+
       </div>
 
       <div class="modal-body">
@@ -448,7 +473,27 @@ VENTANA MODAL REGISTRO
 
 		  	</div>
 
-			<input type="submit" class="btn btn-dark btn-block" value="Registrarse">
+			
+
+			<div class="container">
+
+				<div class="row">
+
+					<div class="col-6">
+
+						<input type="submit" class="btn btn-dark btn-block" value="Registrarme a Alphus">	
+
+					</div>
+
+					<div class="col-6">
+
+						<input type="button" class="btn btn-danger btn-block" data-dismiss="modal" value="Cerrar Ventana">
+						
+					</div>
+
+				</div>
+
+			</div>
 
 			<?php 
 			

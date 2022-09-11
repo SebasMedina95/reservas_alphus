@@ -49,7 +49,7 @@ MAPA
 ======================================-->
 <div class="mapa container-fluid bg-white p-0">
 	
-	<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2787.6281871520746!2d-76.4325534554915!3d8.851488549699365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e5a00caccbf58cb%3A0xf63a9172ab2d07f1!2sHotel%20Riviera%20Del%20Sol!5e0!3m2!1ses!2sco!4v1661018536017!5m2!1ses!2sco" width="1900" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+	<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2787.6281871520746!2d-76.4325534554915!3d8.851488549699365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e5a00caccbf58cb%3A0xf63a9172ab2d07f1!2sHotel%20Riviera%20Del%20Sol!5e0!3m2!1ses!2sco!4v1661018536017!5m2!1ses!2sco" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
 	<div class=" p-4 info"> 
 
