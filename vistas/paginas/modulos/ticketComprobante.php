@@ -183,8 +183,8 @@ ob_start();
     /**Llamado Ajax */
     let datos = new FormData();
     datos.append("idReservaTicket" , idReservaTicket);
-    let urlPrincipal = 'http://reservas-alphus.com/';
-    let urlServidor  = 'http://admon-reservas-alphus.com/';
+    let urlPrincipal = 'http://localhost/reservas_alphus/';
+    let urlServidor  = 'http://localhost/dashboard_reservas_alphus/';
 
     $.ajax({
         url : urlPrincipal+"ajax/reservas.ajax.php",
