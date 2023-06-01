@@ -408,7 +408,23 @@ INFO PERFIL
 
 					<div class="col-6 d-none d-lg-block">
 						
-						<h4 class="float-left">¡Hola! <?php echo $usuarioLogeado["nombre"]; ?> </h4>
+						<h4 class="float-left"><strong>Bienvenido(a) a su gestor: </strong></h4>
+						
+					</div>
+
+					<br>
+
+					<div class="col-12 d-none d-lg-block">
+						
+						<h4 class="float-left"><?php echo $usuarioLogeado["nombre"]; ?>.</h4>
+						
+					</div>
+
+					<br>
+					
+					<div class="col-12 d-none d-lg-block">
+						
+						<p class="help-block small"><strong>En caso de modificación/cancelación de reserva: </strong> por favor escribirnos al WhatsApp: <a href="https://api.whatsapp.com/send?phone=573112223344&text=Hola Hotel Alphus, necesito realizar el cambio o la cancelación de una de mis reservas." target="_blank">+57 311 222 33 44.</a> También puede disponer de nuestra función de contactenos al final de esta página.</p>
 
 					</div>
 					
@@ -729,6 +745,8 @@ INFO PERFIL
 										// 	</tr>';
 
 										// }
+
+										
 
 									?>
 
