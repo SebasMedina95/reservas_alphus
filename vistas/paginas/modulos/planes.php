@@ -28,7 +28,7 @@ PLANES
 					
 					<figure class="text-center">
 						
-						<h1 descripcion="<?php echo $value["descripcion"] ?>"><?php echo $value["tipo"] ?></h1>
+						<h1 descripcion="<?php echo $value["min_descripcion"] ?>"><?php echo $value["tipo"] ?></h1>
 
 					</figure>
 

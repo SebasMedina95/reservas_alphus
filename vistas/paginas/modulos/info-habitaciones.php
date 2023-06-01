@@ -6,8 +6,9 @@
 $valor = $_GET["pagina"];
 
 $habitaciones = ControladorHabitaciones::ctrMostrarHabitaciones($valor);
+$comodidades = ControladorHabitaciones::ctrMostrarComodidades($valor);
 
-// echo "<pre class='bg-white'>" ; print_r($habitaciones) ; echo "</pre>";
+//echo "<pre class='bg-white'>" ; print_r($comodidades) ; echo "</pre>";
 
 ?>
 
@@ -226,16 +227,16 @@ INFO HABITACIÓN
 					
 						/**Recordemos que los íconos vienen en formato JSON desde la BD, entonces debemos convertirlo
 						 * para manipularlo como si fuera un array: */
-						$incluye = json_decode($habitaciones[0]["incluye"] , true);
+						//$incluye = json_decode($habitaciones[0]["incluye"] , true);
 					
 					?>
 
-					<?php foreach ($incluye as $key => $value) : ?>
+					<?php foreach ($comodidades as $key => $value) : ?>
 
 						<li>
 							<h5>
-								<i class="<?php echo $value["icono"] ?> w-25 colorTitulos"></i> 
-								<span class="text-dark small"><?php echo $value["item"] ?></span>
+								<i class="fa <?php echo $value["icono"] ?> w-25 colorTitulos"></i> 
+								<span class="text-dark small"><?php echo $value["comodidad"] ?></span>
 							</h5>
 						</li>
 

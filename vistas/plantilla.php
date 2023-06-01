@@ -27,7 +27,7 @@ $servidor = ControladorRuta::ctrServidor();
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 
 	<!-- Font Awesome -->
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.1.2/css/all.css" integrity="zmfNZmXoNWBMemUOo1XUGFfc0ihGGLYdgtJS3KCr/l0=">
 
 	<!-- Fuente Open Sans y Ubuntu -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300|Ubuntu" rel="stylesheet">
@@ -195,7 +195,7 @@ if(isset($_GET["pagina"])){
 	
 				echo "<script>
 	
-						window.location.replace('http://reservas-alphus.com/cuenta-verificada');
+						window.location.replace('http://localhost:80/reservas_alphus/cuenta-verificada');
 	
 					</script>";
 	

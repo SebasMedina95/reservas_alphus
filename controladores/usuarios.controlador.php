@@ -218,7 +218,7 @@ Class ControladorUsuarios{
                     /** ----- Redireccionamos y ajustamos con ello los elementos POST ----- */
                     echo "<script>
 
-                        window.location.replace('http://reservas-alphus.com/perfil-pre');
+                        window.location.replace('http://localhost:80/reservas_alphus/perfil-pre');
 
                     </script>";
 
@@ -449,9 +449,9 @@ Class ControladorUsuarios{
 				/*=============================================
 				CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL USUARIO
 				=============================================*/
-                /**Sabiendo que servidor = http://admon-reservas-alphus.com/ */
+                /**Sabiendo que servidor = http://admon-localhost:80/reservas_alphus/ */
 				//$directorio = $servidor."vistas/img/usuarios/".$_POST["idUsuarioFoto"];
-				$directorio = "../reservas-alphus-admon/vistas/img/usuarios/".$_POST["idUsuarioFoto"];
+				$directorio = "../dashboard_reservas_alphus/views/img/usuarios/".$_POST["idUsuarioFoto"];
 
 				/*=============================================
 				PRIMERO PREGUNTAMOS SI EXISTE OTRA IMAGEN EN LA BD
@@ -545,10 +545,10 @@ Class ControladorUsuarios{
 					</script>';
 
 				}
-                /**Por que si no nos quedaría algo del tipo http://admon-reservas-alphus.com/vistas/img/usuarios/###.jpg aca seria 33
-                 * ../reservas-alphus-admon/vistas/img/usuarios/  aca seria 25
+                /**Por que si no nos quedaría algo del tipo http://admon-localhost:80/reservas_alphus/vistas/img/usuarios/###.jpg aca seria 33
+                 * ../dashboard_reservas_alphus/views/img/usuarios/  aca seria 25
                  * Entonces debemos quitar los primeros 15 caracteres que corresponde a administracion/ */
-                $ruta = substr($ruta, 25);
+                $ruta = substr($ruta, 29);
 
             }
 
@@ -1001,7 +1001,7 @@ Class ControladorUsuarios{
                     /** ----- Redireccionamos y ajustamos con ello los elementos POST ----- */
                     echo "<script>
 
-                        window.location.replace('http://reservas-alphus.com/duda-enviada');
+                        window.location.replace('http://localhost:80/reservas_alphus/duda-enviada');
 
                     </script>";
                 } 

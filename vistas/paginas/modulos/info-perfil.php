@@ -263,7 +263,7 @@ INFO PERFIL
 						<!-- Si no tenemos fotos, entonces traemos la por defecto del server -->
 						<?php if($usuarioLogeado["foto"] == ""): ?>
 
-							<img src="<?php echo $servidor; ?>vistas/img/usuarios/default/default.png" class="img-fluid">
+							<img src="<?php echo $servidor; ?>views/img/usuarios/default/default.png" class="img-fluid">
 						
 						<?php else: ?>
 							<!-- Si es en modo directo -->
